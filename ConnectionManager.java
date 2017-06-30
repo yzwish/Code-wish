@@ -8,34 +8,34 @@ import java.sql.ResultSet;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 public class ConnectionManager {
-	//使用单例模式创建数据库连接池  
+	//浣跨敤鍗曚緥妯″紡鍒涘缓鏁版嵁搴撹繛鎺ユ睜  
     private static ConnectionManager instance;  
     private ComboPooledDataSource dataSource;
 	
-	//这里改变IP地址
+	//杩欓噷鏀瑰彉IP鍦板潃
 	private static String DBIP="127.0.0.1";
 	
-	//打包成war包后用以下路径
+	//鎵撳寘鎴恮ar鍖呭悗鐢ㄤ互涓嬭矾寰�
 	//public static String picUploadPath="D:\\Apache Software Foundation\\Tomcat 9.0\\webapps\\yzwish\\verifiedImg\\";
 	public static String picUploadPath="D:\\Apache Software Foundation\\Tomcat 9.0\\webapps\\yzwish\\WebContent\\verifiedImg\\";
-	//审核图片上传地址
+	//瀹℃牳鍥剧墖涓婁紶鍦板潃
 
 	
     private ConnectionManager() throws SQLException, PropertyVetoException {  
         dataSource = new ComboPooledDataSource(); 
         
-        //用户名可变-----------------------------------
+        //鐢ㄦ埛鍚嶅彲鍙�-----------------------------------
         dataSource.setUser("root");  
-        //密码可变-------------------------------------
+        //瀵嗙爜鍙彉-------------------------------------
         dataSource.setPassword("jwc1.usst.edu.cn"); 
         
-        dataSource.setJdbcUrl("jdbc:mysql://"+DBIP+":3306/yzwish?useUnicode=true&characterEncoding=utf-8&useSSL=false");//数据库地址 
+        dataSource.setJdbcUrl("jdbc:mysql://"+DBIP+":3306/yzwish?useUnicode=true&characterEncoding=utf-8&useSSL=false");//鏁版嵁搴撳湴鍧� 
         dataSource.setDriverClass("com.mysql.jdbc.Driver");  
-        dataSource.setInitialPoolSize(5); //初始化连接数  
-        dataSource.setMinPoolSize(1);//最小连接数  
-        dataSource.setMaxPoolSize(10);//最大连接数  
-        dataSource.setMaxStatements(50);//最长等待时间  
-        dataSource.setMaxIdleTime(60);//最大空闲时间，单位毫秒  
+        dataSource.setInitialPoolSize(5); //鍒濆鍖栬繛鎺ユ暟  
+        dataSource.setMinPoolSize(1);//鏈�灏忚繛鎺ユ暟  
+        dataSource.setMaxPoolSize(10);//鏈�澶ц繛鎺ユ暟  
+        dataSource.setMaxStatements(50);//鏈�闀跨瓑寰呮椂闂�  
+        dataSource.setMaxIdleTime(60);//鏈�澶х┖闂叉椂闂达紝鍗曚綅姣  
     }  
   
     public static final ConnectionManager getInstance() {  
@@ -59,16 +59,16 @@ public class ConnectionManager {
         return conn;  
     }  
     
-    //关闭连接
-    public static void close(PreparedStatement ptmt,ResultSet rs,Connection conn) {
-    	if(rs!=null){
-    		try {
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	}
+    public static void close(Connection conn){
+    	try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    public static void close(Connection conn,PreparedStatement ptmt) {
+    	
     	if(ptmt!=null){
     		try {
 				ptmt.close();
@@ -85,20 +85,49 @@ public class ConnectionManager {
 				e.printStackTrace();
 			}
     	}
-
+    
+}
+    //鍏抽棴杩炴帴
+    public static void close(Connection conn,ResultSet rst,PreparedStatement ptmt) {
+    	
+        	if(rst!=null){
+        		try {
+					rst.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        	if(ptmt!=null){
+        		try {
+					ptmt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        	if(conn!=null){
+        		try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+        
 	}
 
-	//执行查询语句
+	//鎵ц鏌ヨ璇彞
 	public static ResultSet excuteSelect(String sql,Connection conn,PreparedStatement ptmt,ResultSet rs) {
-		System.out.println("使用连接池查询................................");  
+		System.out.println("浣跨敤杩炴帴姹犳煡璇�................................");  
         long beginTime = System.currentTimeMillis(); 
 		 try {
-			//预编译语句
+			//棰勭紪璇戣鍙�
 			 ptmt=conn.prepareStatement(sql);
-			 //执行
+			 //鎵ц
 			 rs = ptmt.executeQuery();  
 			 long endTime = System.currentTimeMillis();  
-	         System.out.println("执行花费时间为:" + (endTime - beginTime));  
+	         System.out.println("鎵ц鑺辫垂鏃堕棿涓�:" + (endTime - beginTime));  
 			 return rs;
 			} catch (SQLException e) {  
 	             e.printStackTrace();  
@@ -106,9 +135,9 @@ public class ConnectionManager {
 	        }	 
 	}
 	
-	//执行增删改语句
+	//鎵ц澧炲垹鏀硅鍙�
 	public static boolean excuteIUD(String sql,Connection conn,PreparedStatement ptmt){
-		 System.out.println("使用连接池增删改................................");  
+		 System.out.println("浣跨敤杩炴帴姹犲鍒犳敼................................");  
 	     int n=0;
          long beginTime = System.currentTimeMillis(); 
          try {  
@@ -118,7 +147,7 @@ public class ConnectionManager {
               e.printStackTrace();  
           } 
          long endTime = System.currentTimeMillis();  
-         System.out.println("执行花费时间为:" + (endTime - beginTime));  
+         System.out.println("鎵ц鑺辫垂鏃堕棿涓�:" + (endTime - beginTime));  
          if(n!=0)return true;
  		 return false;         
 	}
@@ -130,10 +159,10 @@ public class ConnectionManager {
 		ResultSet rs=null;
 		try {
 
-			//可以加需要锁定的变量
-			//synchronized(莫某变量){
+			//鍙互鍔犻渶瑕侀攣瀹氱殑鍙橀噺
+			//synchronized(鑾煇鍙橀噺){
 		    	String sql="select * from Account where id='"+12345+"' ";
-		    	//如果调用通用函数
+		    	//濡傛灉璋冪敤閫氱敤鍑芥暟
 		    	rs=ConnectionManager.excuteSelect(sql,conn,ptmt,rs);	
 		    	while(rs.next()){
 		    		System.out.println(rs.getString(1));
