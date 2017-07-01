@@ -42,7 +42,11 @@ public class LoginController {
 	
 	//此函数使用ajax处理登录验证
 	@RequestMapping(value="/checkLogin",method=RequestMethod.POST) 
-    public @ResponseBody String checkLogin(@RequestBody Account account,HttpServletRequest request,HttpSession session,String from){  
+    public @ResponseBody String checkLogin(@RequestBody Account account,HttpServletRequest request,HttpSession session){  
+        System.out.println("进入checkLogin");
+		System.out.println(account.toString());
+		System.out.println("from:"+account.getFrom());
+		String from=account.getFrom();
 		JSONArray array=new JSONArray();
 		JSONObject jsonObj = new JSONObject();
 		int result=UserDao.login(account);
@@ -50,7 +54,7 @@ public class LoginController {
 		{
 			session.setAttribute("login_status", 1);//登录状态
 			session.setAttribute("id", account.getId());
-			session.setAttribute("duty",String.valueOf(account.getDuty()));
+			session.setAttribute("duty", String.valueOf(account.getDuty()));
 			if(from!=null)
             {
             	from=from.replace("&", "&amp;");
@@ -66,11 +70,13 @@ public class LoginController {
 		jsonObj.put("msg", result);
 		jsonObj.put("from", from);
         array.add(jsonObj);   
+        System.out.println(array.toString());
         return array.toString();	        
 	}
 	
 	@RequestMapping(value="/logout",method=RequestMethod.GET) 
     public ModelAndView logout(HttpSession session,HttpServletRequest request,String from){  
+		System.out.println("进入logoutAction！");
 		if(from!=null)
 		{
 		
@@ -83,18 +89,21 @@ public class LoginController {
 			}
 		}
 		request.setAttribute("from", from);
+		System.out.println("from:"+from);
 		
 		//清除会话域状态
 		if(session!=null)
 		{
-			
+			System.out.println("清除此次会话");
 			session.invalidate();
 		}
+		System.out.println("退出logoutAction！");
 		return new ModelAndView("redirect:/jsp/index.jsp?from="+from);
 	}
 	
 	@RequestMapping(value="/getHighSchoolList",method=RequestMethod.GET) 
     public @ResponseBody String getHighSchoolList(){  
+        System.out.println("进入getHighSchoolList");
 		JSONArray array=new JSONArray();
 		HashMap<String,String> proMap=new HashMap<String,String>();
 		HashMap<String,ArrayList<HighSchool>> hm=UserDao.getPCHS(proMap);
@@ -122,10 +131,12 @@ public class LoginController {
 			}
 			
 		}
+        System.out.println(array.toString());
         return array.toString();	        
 	}
 	@RequestMapping(value="/getCollegeList",method=RequestMethod.GET) 
     public @ResponseBody String getCollegeList(){  
+        System.out.println("进入getCollegeList");
 		JSONArray array=new JSONArray();
 		HashMap<String,String> proMap=new HashMap<String,String>();
 		HashMap<String,ArrayList<University>> hm=UserDao.getPC(proMap);
@@ -153,41 +164,51 @@ public class LoginController {
 			}			
 	      
 		}
+        System.out.println(array.toString());
         return array.toString();	        
 	}
 	@RequestMapping(value="/getMajorList",method=RequestMethod.POST) 
     public @ResponseBody String getMajorList(@RequestBody University university){  
+        System.out.println("进入getMajorList");
+        System.out.println(university.getUniversityId());
 		JSONArray array=new JSONArray();
-		JSONObject jsonObj = new JSONObject();
+		
 		ArrayList<Major> mList=UserDao.getMajorList(university);
 		Iterator itor=mList.iterator();
 		while(itor.hasNext()){
+			JSONObject jsonObj = new JSONObject();
 			Major temp=(Major) itor.next();
 			jsonObj.put("majorId", temp.getMajorId());
 			jsonObj.put("majorName", temp.getMajorName());
+			array.add(jsonObj);
 		}		
-		array.add(jsonObj);
+        System.out.println(array.toString());
         return array.toString();	        
 	}
 	
 	@RequestMapping(value="/checkAccountExists",method=RequestMethod.POST) 
     public @ResponseBody String checkAccountExists(@RequestBody Account account){  
+        System.out.println("进入checkLogin");
+		System.out.println(account.toString());
 		JSONArray array=new JSONArray();
 		JSONObject jsonObj = new JSONObject();
 		int result=UserDao.hasAccount(account);		
 		jsonObj.put("msg", result);
         array.add(jsonObj);   
+        System.out.println(array.toString());
         return array.toString();	        
 	}
 	
 	@RequestMapping(value="/register",method=RequestMethod.POST) 
     public ModelAndView register(Account ac,HighSchoolStu hsstu,CollegeStu cs,Teacher tea,
     		String from,HttpServletRequest request,HttpSession session){  	
+        System.out.println("进入register");
+    	System.out.println(ac.toString()+hsstu.toString()+tea.toString());
 		int result=UserDao.register(ac,hsstu,cs,tea);
 		if(result==1){
 			session.setAttribute("login_status", 1);//登录状态
-			session.setAttribute("id", cs.getId());
-			session.setAttribute("duty",String.valueOf(ac.getDuty()));
+			session.setAttribute("id", ac.getId());
+			session.setAttribute("duty", String.valueOf(ac.getDuty()));
 			if(from!=null)
             {
             	from=from.replace("&", "&amp;");
@@ -199,6 +220,7 @@ public class LoginController {
 				}
             }
 			request.setAttribute("from", from);
+			System.out.println("from:"+from);
 			return new ModelAndView("redirect:/jsp/index.jsp?from="+from);
 		}
 		else{

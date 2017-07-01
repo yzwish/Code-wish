@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 public class Question {
 	private int followNumber;//关注量
-	private Date questionCreateTime;	//提问时间
+	private Timestamp questionCreateTime;	//提问时间
 	private String userId;					//提问者ID
 	private int questionId;				//问题ID
 	private String quesTitle;			//问题标题
@@ -17,6 +17,7 @@ public class Question {
 	//
 	private Timestamp lastAnswerTime;		//最后回复时间
 	private int topicId;				//所属话题ID
+
 	
 	public int getTopicId() {
 		return topicId;
@@ -36,10 +37,10 @@ public class Question {
 	public void setFollowNumber(int followNumber) {
 		this.followNumber = followNumber;
 	}
-	public Date getQuestionCreateTime() {
+	public Timestamp getQuestionCreateTime() {
 		return questionCreateTime;
 	}
-	public void setQuestionCreateTime(Date questionCreateTime) {
+	public void setQuestionCreateTime(Timestamp questionCreateTime) {
 		this.questionCreateTime = questionCreateTime;
 	}
 	public String getUserId() {

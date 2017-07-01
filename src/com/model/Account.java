@@ -6,6 +6,16 @@ public class Account {
 	private String password;
 	private int duty;
 	private int status;
+	
+	//
+	private String from;
+	
+	public String getFrom() {
+		return from;
+	}
+	public void setFrom(String from) {
+		this.from = from;
+	}
 	public String getId() {
 		return id;
 	}

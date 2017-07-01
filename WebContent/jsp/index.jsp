@@ -62,7 +62,7 @@
 		  //from=URLEncoder.encode(from,"UTF-8");
 		  //from=java.net.URLDecoder.decode(from, "UTF-8");
 		  //from=from.replace("%3F", "?").replace("%3D","=").replace("%26", "&");
-		  response.sendRedirect(from);
+		  response.sendRedirect("http"+from);
 	  
       } 
 	   else{

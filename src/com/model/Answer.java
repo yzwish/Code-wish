@@ -8,8 +8,18 @@ public class Answer {
 	private int answerApprovalNum;	//回答点赞数
 	private String answerContent;	//回答内容
 	private Timestamp answerTime;		//回答时间
-	private int answerUserId;		//回答者ID
+	private String answerUserId;		//回答者ID
 	
+	//
+	private int questionId;		//所属问题ID
+	
+	
+	public int getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
 	public int getAnswerId() {
 		return answerId;
 	}
@@ -34,10 +44,10 @@ public class Answer {
 	public void setAnswerTime(Timestamp answerTime) {
 		this.answerTime = answerTime;
 	}
-	public int getAnswerUserId() {
+	public String getAnswerUserId() {
 		return answerUserId;
 	}
-	public void setAnswerUserId(int answerUserId) {
+	public void setAnswerUserId(String answerUserId) {
 		this.answerUserId = answerUserId;
 	}
 	

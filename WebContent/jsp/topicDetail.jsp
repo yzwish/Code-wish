@@ -13,6 +13,60 @@
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet">
 <link href="../css/topic.css" rel="stylesheet">
+<script src="../js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	
+	var id = "${sessionScope.id}";
+	if(id==""){
+		var flw='<button type="button" class="btn btn-primary"'
+			+'style="font-size: 16px;"><span  class=" glyphicon glyphicon-plus" '
+			+'onclick="followTopic()">关注</span></button>';
+		
+            $("#followTopic").html(flw);
+		return false;
+	}else{
+		
+		//查询用户是否关注了该话题
+		
+		var topicId=$("#topicId").val();
+	    var userId=id;
+	    var follow = new Object();
+	    follow.followedId = topicId;
+	    follow.followUserId = userId;
+	    follow.followType = 2;
+	    var info = JSON.stringify(follow);
+		$.ajax({
+	        type: "POST",
+	        contentType:'application/json',
+	        url: "/yzwish/topic/checkFollow",
+	        data:info,
+	        success: function(data, status) {
+	            if (data == "error") {
+	                var flw='<button type="button" class="btn btn-primary"'
+					+'style="font-size: 16px;"><span  class=" glyphicon glyphicon-plus" '
+					+'onclick="followTopic()">关注</span></button>';
+				
+	                $("#followTopic").html(flw);
+	            }else{
+	            	var followItem='<button type="button" class="btn" disabled style="font-size: 16px;">'
+					+'<span class="fa fa-check">已关注</span></button>';
+	            	$("#followTopic").html(followItem);
+	            	
+	            }
+	        },
+	        error: function() {
+	            alert("查询出错");
+	        }
+	    });
+	}
+		
+		
+        
+	
+	
+});
+</script>
 </head>
 
 <body>
@@ -29,23 +83,25 @@
 				</div>
 				<span id="topicName" class="topic-name">${topic.topicName }</span>
 			</div>
-			<div class="follow-topic col-md-2 column">
-				<button type="button" class="btn btn-primary"
-					style="font-size: 16px;">
-					<span class=" glyphicon glyphicon-plus">关注</span>
-				</button>
+			<div id="followTopic" class="follow-topic col-md-2 column">
+				
 			</div>
 			<div class="col-md-3 column" style="height: 50px; line-height: 50px;">
-				关注量：${topic.followNumber }
+				关注量：<span id="follow-number">${topic.followNumber }</span>
 				<button type="button" class="btn btn-small"
 					style="margin-left: 50px;">举报</button>
 			</div>
 			<div class="col-md-3 column" style="height: 50px; line-height: 50px;">
-				<input type="search" placeholder="搜索问题"
+			<form action="/yzwish/topic/searchQuestion" method="POST"
+				onsubmit="return checkSearch()">
+				<input type="text"  name="thisTopicId" value="${topic.topicId }"
+					style="visibility: hidden" /> 
+				<input id="searchWord" name="searchWord" type="search" placeholder="搜索问题"
 					style="display: inline-block; border: 1px solid #999; width: 200px; height: 30px; line-height: 30px" />
-				<button type="button" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary">
 					<span class=" glyphicon glyphicon-search"></span>
 				</button>
+				</form>
 			</div>
 		</div>
 		<c:choose>
@@ -65,7 +121,8 @@
 							<li>
 								<div class="row clearfix">
 									<div class="col-md-8 column">
-										<a href="#" target="_blank" style="margin-left:50px">${question.quesTitle }</a>
+									<span class="answer-count">${question.answerCount }</span>
+										<a href="/yzwish/topic/showQA?questionId=${question.questionId }" target="_blank" style="margin-left:50px">${question.quesTitle }</a>
 									</div>
 									<div class="col-md-2 column">
 										<span> <i class=" glyphicon glyphicon-user"></i> <span>
@@ -86,8 +143,9 @@
 		<div class="post-new-ques">
 			<form action="/yzwish/topic/createQuestion" method="POST"
 				onsubmit="return createQuestion()">
-				<input type="text" name="topicId" value="${topic.topicId }"
-					style="visibility: hidden" /> <input type="text" name="userId"
+				<input type="text" id="topicId" name="topicId" value="${topic.topicId }"
+					style="visibility: hidden" /> 
+				<input id="userId" type="text" name="userId"
 					value="${sessionScope.id }" style="visibility: hidden" />
 
 				<div class="row clearfix">
@@ -114,7 +172,7 @@
 			</form>
 		</div>
 	</div>
-	<script src="../js/jquery.min.js"></script>
+
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/topic.js"></script>
 </body>

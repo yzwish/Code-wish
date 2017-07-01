@@ -103,15 +103,14 @@ function getMajor(){
 	    	var res = $.parseJSON(data);
 	    	$('#pum_m').html('');
 	    	$("#pumm").css("display",'block');
-	    	if(res[0]==null||res[0].majorId==null){
+	    	if(res==null||res.length==0){
 	    		$('#pum_m').append("<option value='unknown'>抱歉暂未添加该大学开设专业</option>");
-	    	}else{
-	    		for(i=0;i<res.length;i++){
-		    		$('#pum_m').append("<option value='"+res[0].majorId+"'>"+res[0].majorName+"</option>");
-		    	}
 	    	}
-	    	
-	    	
+	    	else{
+	    		for(j=0;j<res.length;j++){	
+		    		$('#pum_m').append("<option value='"+res[j].majorId+"'>"+res[j].majorName+"</option>");
+		    	}
+	    	}	    	
 	    },
 		error:function(XMLHttpRequest, textStatus, errorThrown){
 			//alert("进入error！");
@@ -132,6 +131,7 @@ $('#loginCheck').click(
 									var account=new Object();
 									account.id=$("#id1").val();
 									account.password=$("#password1").val();
+									account.from=$("#from").val();
 									var info=JSON.stringify(account);
 									$.ajax({
 										type:'post',
@@ -143,9 +143,9 @@ $('#loginCheck').click(
 											//alert("发送之前！");
 											//检查用户名或密码为空
 											if($('#id1').val()==''||$('#password1').val()==''){
-												alert("用户名或密码不能为空！");
+												document.getElementById("msg").innerHTML='用户名或密码不能为空';
 												return false;
-											}
+											}										
 										},										
 									    success:function(data){
 									    	//alert("返回页面");
