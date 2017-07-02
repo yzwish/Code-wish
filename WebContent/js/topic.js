@@ -16,7 +16,7 @@ function searchTopic() {
 	                		var res = $.parseJSON(data);
 	                		var resList="";
 	                    	for(var i=0;i<res.length;i++){
-	                    		resList+="<li><a href='/yzwish/topic/showTopic?topicId="+res[i].topicId+"'>"+res[i].topicName+"</a></li>";
+	                    		resList+="<li><a href='/yzwish/topic/showTopic?topicId="+res[i].topicId+"' target='_blank'>"+res[i].topicName+"</a></li>";
 	                    	}
 	                    	$("#search-res-list").html(resList);
 	                	}else{
@@ -321,6 +321,248 @@ function followQuestion(){
 	        },
 	        error: function() {
 	            alert("关注失败");
+	        }
+	    });
+	}
+}
+
+
+
+
+function reportQuestion(){
+	
+	var flag=false;
+     
+    $.ajax({
+        type: "GET",
+        url: "/yzwish/topic/loginVerify",
+        async:false,
+        data: {},
+        success: function(data, status) {
+            if (data == "error") {
+                window.location.href = "/yzwish/jsp/login.jsp";
+                
+            }else{
+            	flag=true;
+            }
+        },
+        error: function() {
+            alert("验证失败");
+        }
+    });
+    if(flag==false){
+		return false;
+	}else{
+		var questionId=$("#questionId").val();
+	    var userId=$("#answerUserId").val();
+	    var checkValue = $("input[name='reportReasons']:checked").val();
+	    
+	    var report = new Object();
+	    report.reportReason = checkValue;
+	    report.reportType = 1;
+	    report.reporterId = userId;
+	    report.reportedId = questionId;
+	    var info = JSON.stringify(report);
+		$.ajax({
+	        type: "POST",
+	        async:false,
+	        contentType:'application/json',
+	        url: "/yzwish/topic/report",
+	        data: info,
+	        success: function(data, status) {
+	            if (data == "error") {
+	                alert("服务器出错啦")
+	                
+	            }else{
+	            	alert("举报成功！请等待管理员审核..");
+	            	
+	            }
+	        },
+	        error: function() {
+	            alert("举报失败");
+	          
+	          
+ 		 	
+	        }
+	    });
+		 $('#modal-container-report').modal("hide");
+ 		 $(".modal-backdrop").remove();
+		
+	}
+}
+
+
+function reportAnswer(e){
+	var flag=false;
+    
+    $.ajax({
+        type: "GET",
+        url: "/yzwish/topic/loginVerify",
+        async:false,
+        data: {},
+        success: function(data, status) {
+            if (data == "error") {
+                window.location.href = "/yzwish/jsp/login.jsp";
+                
+            }else{
+            	flag=true;
+            }
+        },
+        error: function() {
+            alert("验证失败");
+        }
+    });
+    if(flag==false){
+		return false;
+	}else{
+		var answerId=$(e).parent().find('input:eq(0)').val();
+		console.log(answerId);
+	    var userId=$("#answerUserId").val();
+	    var checkValue = $("input[name='reportReasons-"+answerId+"']:checked").val();
+	    
+	    var report = new Object();
+	    report.reportReason = checkValue;
+	    report.reportType = 3;
+	    report.reporterId = userId;
+	    report.reportedId = answerId;
+	    var info = JSON.stringify(report);
+		$.ajax({
+	        type: "POST",
+	        async:false,
+	        contentType:'application/json',
+	        url: "/yzwish/topic/report",
+	        data: info,
+	        success: function(data, status) {
+	            if (data == "error") {
+	                alert("服务器出错啦")
+	                
+	            }else{
+	            	alert("举报成功！请等待管理员审核..");
+	            	
+	            }
+	        },
+	        error: function() {
+	            alert("举报失败");
+	          
+	          
+ 		 	
+	        }
+	    });
+		 $("#modal-container-report-ans-"+answerId).modal("hide");
+ 		 $(".modal-backdrop").remove();
+		
+	}
+}
+
+
+
+function reportTopic(){
+	var flag=false;
+    
+    $.ajax({
+        type: "GET",
+        url: "/yzwish/topic/loginVerify",
+        async:false,
+        data: {},
+        success: function(data, status) {
+            if (data == "error") {
+                window.location.href = "/yzwish/jsp/login.jsp";
+                
+            }else{
+            	flag=true;
+            }
+        },
+        error: function() {
+            alert("验证失败");
+        }
+    });
+    if(flag==false){
+		return false;
+	}else{
+		var topicId=$("#topicId").val();
+	    var userId=$("#userId").val();
+	    var checkValue = $("input[name='reportReasons']:checked").val();
+	    
+	    var report = new Object();
+	    report.reportReason = checkValue;
+	    report.reportType = 2;
+	    report.reporterId = userId;
+	    report.reportedId = topicId;
+	    var info = JSON.stringify(report);
+		$.ajax({
+	        type: "POST",
+	        async:false,
+	        contentType:'application/json',
+	        url: "/yzwish/topic/report",
+	        data: info,
+	        success: function(data, status) {
+	            if (data == "error") {
+	                alert("服务器出错啦")
+	                
+	            }else{
+	            	alert("举报成功！请等待管理员审核..");
+	            	
+	            }
+	        },
+	        error: function() {
+	            alert("举报失败");
+	          
+	          
+ 		 	
+	        }
+	    });
+		 $('#modal-container-report-topic').modal("hide");
+ 		 $(".modal-backdrop").remove();
+		
+	}
+}
+
+
+function approvalAns(id){
+var flag=false;
+    
+    $.ajax({
+        type: "GET",
+        url: "/yzwish/topic/loginVerify",
+        async:false,
+        data: {},
+        success: function(data, status) {
+            if (data == "error") {
+                window.location.href = "/yzwish/jsp/login.jsp";
+                
+            }else{
+            	flag=true;
+            }
+        },
+        error: function() {
+            alert("验证失败");
+        }
+    });
+    if(flag==false){
+		return false;
+	}else{
+		var answerId=id;
+		$.ajax({
+	        type: "POST",
+	        url: "/yzwish/topic/approveAns",
+	        data:
+	        	{"answerId":answerId},
+	        success: function(data, status) {
+	            if (data == "error") {
+	                alert("服务器出错啦")
+	                
+	            }else{
+	            	var num=Number($("#approvalNum-"+id).html());
+	            	num=num+1;
+	            	$("#approvalNum-"+id).html(num);
+	            	
+	            }
+	        },
+	        error: function() {
+	            alert("点赞失败");
+	          
+	          
+ 		 	
 	        }
 	    });
 	}

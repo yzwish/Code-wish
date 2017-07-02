@@ -8,6 +8,6 @@
 </head>
 <body>
 发起话题成功！请等待管理员审核..
-<a href="/jsp/topicHome.jsp">点此返回</a>
+<a href="/yzwish/jsp/topicHome.jsp">点此返回</a>
 </body>
 </html>

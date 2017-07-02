@@ -12,6 +12,7 @@ import java.util.Map;
 import com.model.Answer;
 import com.model.Follow;
 import com.model.Question;
+import com.model.Report;
 import com.model.Topic;
 
 import net.sf.json.JSONArray;
@@ -118,6 +119,147 @@ public class TopicDao {
         }
 	}
 	
+	//显示热门话题
+	public static ArrayList<Topic> showHotTopic(){
+		String sql="SELECT  topicId,topicName FROM  topic WHERE topicState=1 "
+				+ " ORDER BY  followNumber DESC LIMIT  10";
+		Connection conn = ConnectionManager.getInstance().getConnection();  
+		PreparedStatement ptmt=null;
+		ResultSet rst=null;
+		ArrayList<Topic> hotTopicList=new ArrayList<Topic>();
+		Topic topic=null;
+        try{
+        	ptmt = conn.prepareStatement(sql);
+        	rst=ptmt.executeQuery();
+        	while(rst.next()){
+        		topic=new Topic();
+        		topic.setTopicId(rst.getInt("topicId"));
+        		topic.setTopicName(rst.getString("topicName"));
+        		hotTopicList.add(topic);
+        		 
+        	}
+        	return hotTopicList;
+        }catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+        }finally{
+        	ConnectionManager.close(conn,rst,ptmt);
+
+        }
+	}
+	
+	//显示推荐话题
+	public static ArrayList<Topic> showRecommTopic(String userId,int duty){
+		String sql1 ="";
+		String sql2 ="";
+		String sql3 ="";
+		if(duty==1){ 
+			//心仪的省
+			sql1 = "SELECT topicId,topicName,topicDiscription,followNumber,topicAvatar  FROM topic WHERE topicState=1 AND "
+					+ " topicName IN (SELECT provinceName FROM province WHERE"
+					+ " provinceId IN (SELECT rId FROM volunschool"
+					+ " WHERE id='"+userId+"' AND nameDuty =1 )) ;";
+			//心仪的大学
+			sql2 = "SELECT topicId,topicName,topicDiscription,followNumber,topicAvatar FROM topic WHERE topicState=1 AND "
+					+ " topicName IN (SELECT universityName FROM university WHERE"
+					+ " universityId IN (SELECT rId FROM volunschool"
+					+ " WHERE id='"+userId+"' AND nameDuty =2 )) ;";
+			//心仪的专业
+			sql3 = "SELECT topicId,topicName,topicDiscription,followNumber,topicAvatar FROM topic WHERE topicState=1 AND "
+					+ " topicName IN (SELECT majorName FROM major WHERE"
+					+ " majorId IN (SELECT rId FROM volunschool"
+					+ " WHERE id='"+userId+"' AND nameDuty =3 )) ;";
+			
+			
+		}else if(duty==2){
+			//大学生所在学校
+			sql1 ="SELECT topicId,topicName,topicDiscription,followNumber,topicAvatar FROM topic WHERE topicState=1 AND "
+					+ " topicName=(SELECT universityName FROM university"
+					+ " WHERE universityId =( SELECT universityId FROM collegestu WHERE id='"+userId+"'));";
+			//大学生所学专业
+			sql2="SELECT topicId,topicName,topicDiscription,followNumber,topicAvatar FROM topic WHERE topicState=1 AND "
+					+ " topicName=(SELECT majorName FROM major"
+					+ " WHERE majorId =( SELECT majorId FROM collegestu WHERE id='"+userId+"'));";
+		
+		
+		}else if(duty==3){
+			//教师任职学校
+			sql1 ="SELECT topicId,topicName,topicDiscription,followNumber,topicAvatar FROM topic WHERE topicState=1 AND "
+					+ " topicName=(SELECT universityName FROM university"
+					+ " WHERE universityId =( SELECT universityId FROM teacher WHERE id='"+userId+"'));";
+			//教师研究方向
+			sql2 ="SELECT topicId,topicName,topicDiscription,followNumber,topicAvatar FROM topic WHERE topicState=1 AND "
+					+ " topicName=( SELECT resDirection FROM teacher WHERE id='"+userId+"'));";
+		
+		
+		}
+		
+			Connection conn = ConnectionManager.getInstance().getConnection();  
+			PreparedStatement ptmt=null;
+			ResultSet rst=null;
+			ArrayList<Topic> recommtTopicList=new ArrayList<Topic>();
+			Topic topic=null;
+			
+	        try{
+	        	if(sql1!=""){
+	        		
+		        	ptmt = conn.prepareStatement(sql1);
+		        	rst=ptmt.executeQuery();
+		        	while(rst.next()){
+		        		topic=new Topic();
+		        		topic.setTopicId(rst.getInt("topicId"));
+		        		topic.setTopicName(rst.getString("topicName"));
+		        		topic.setTopicDiscription(rst.getString("topicDiscription"));
+		        		topic.setFollowNumber(rst.getInt("followNumber"));
+		        		topic.setTopicAvatar(rst.getString("topicAvatar"));
+		        		recommtTopicList.add(topic);
+		        		 
+		        	}
+	        	}
+	        	if(sql2!=""){
+	        		
+		        	ptmt = conn.prepareStatement(sql2);
+		        	rst=ptmt.executeQuery();
+		        	while(rst.next()){
+		        		topic=new Topic();
+		        		topic.setTopicId(rst.getInt("topicId"));
+		        		topic.setTopicName(rst.getString("topicName"));
+		        		topic.setTopicDiscription(rst.getString("topicDiscription"));
+		        		topic.setFollowNumber(rst.getInt("followNumber"));
+		        		topic.setTopicAvatar(rst.getString("topicAvatar"));
+		        		recommtTopicList.add(topic);
+		        		 
+		        	}
+	        	}
+	        	if(sql3!=""){
+	        		ptmt = conn.prepareStatement(sql3);
+		        	rst=ptmt.executeQuery();
+		        	while(rst.next()){
+		        		topic=new Topic();
+		        		topic.setTopicId(rst.getInt("topicId"));
+		        		topic.setTopicName(rst.getString("topicName"));
+		        		topic.setTopicDiscription(rst.getString("topicDiscription"));
+		        		topic.setFollowNumber(rst.getInt("followNumber"));
+		        		topic.setTopicAvatar(rst.getString("topicAvatar"));
+		        		recommtTopicList.add(topic);
+		        		 
+		        	}
+	        	}
+	        	return recommtTopicList;
+	        }catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+	        }finally{
+	        	ConnectionManager.close(conn,rst,ptmt);
+
+	        }
+		
+		
+		
+		
+		
+	}
+	
 	//显示话题主页
 	public static Topic showTopic(int topicId){
 
@@ -154,7 +296,8 @@ public class TopicDao {
 	
 	//显示问题列表
 	public static ArrayList<Question> showQuestionList(int topicId){
-		String sql="SELECT questionId,questionTitle,answerCount,userId,lastAnswerTime FROM question WHERE topicId="+topicId;
+		String sql="SELECT questionId,questionTitle,answerCount,userId,lastAnswerTime FROM question WHERE topicId="+topicId
+				+ " ORDER BY lastAnswerTime DESC ;";
 		Connection conn = ConnectionManager.getInstance().getConnection();  
 		PreparedStatement ptmt=null;
 		ResultSet rst=null;
@@ -249,7 +392,7 @@ public class TopicDao {
 	
 	//显示问题回复
 	public static ArrayList<Answer> showQA(int questionId){
-		String sql="SELECT * FROM answer WHERE questionId="+questionId;
+		String sql="SELECT * FROM answer WHERE questionId="+questionId+" ORDER BY answerApprovalNum DESC ;";
 		Connection conn = ConnectionManager.getInstance().getConnection();  
 		PreparedStatement ptmt=null;
 		ResultSet rst=null;
@@ -404,7 +547,7 @@ public class TopicDao {
     		}
         }catch (SQLException e) {
 			e.printStackTrace();
-			return null;
+			return "error";
         }finally{
         	ConnectionManager.close(conn,ptmt);
 
@@ -436,5 +579,60 @@ public class TopicDao {
         	ConnectionManager.close(conn,rst,ptmt);
 
         }
+	}
+	
+	//举报
+	public static String report(Report report){
+		String sql = "INSERT INTO report VALUES (null,?,?,?,?,now(),0) ;";
+		Connection conn = ConnectionManager.getInstance().getConnection();  
+		PreparedStatement ptmt=null;
+		int type = report.getReportType();
+		String reportedId=report.getReportedId();
+        try{
+        	ptmt = conn.prepareStatement(sql);				
+    		ptmt.setInt(1,type);
+    		ptmt.setString(2,report.getReporterId());
+    		ptmt.setString(3,reportedId);
+    		ptmt.setString(4,report.getReportReason());
+    		int rs1 = ptmt.executeUpdate();	
+    		//服务器错误
+    		if(rs1==0){
+    			return "error";
+    		}else{
+    			return "ok";
+    			
+    		}
+        }catch (SQLException e) {
+			e.printStackTrace();
+			return "error";
+        }finally{
+        	ConnectionManager.close(conn,ptmt);
+
+        }
+	}
+		
+	//点赞
+	public static String approveAns(int id){
+		String sql="UPDATE answer SET answerApprovalNum=answerApprovalNum+1 WHERE answerId="+id;
+		Connection conn = ConnectionManager.getInstance().getConnection();  
+		PreparedStatement ptmt=null;
+		 try{
+	        	ptmt = conn.prepareStatement(sql);				
+	    		
+	    		int rs1 = ptmt.executeUpdate();	
+	    		//服务器错误
+	    		if(rs1==0){
+	    			return "error";
+	    		}else{
+	    			return "ok";
+	    			
+	    		}
+	        }catch (SQLException e) {
+				e.printStackTrace();
+				return "error";
+	        }finally{
+	        	ConnectionManager.close(conn,ptmt);
+
+	        }
 	}
 }

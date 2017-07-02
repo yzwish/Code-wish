@@ -142,7 +142,7 @@
 					<br/>
 					<br/>
 					<br/>
-					<a href="topicHome.jsp">
+					<a href="/yzwish/topic/showHotTopic">
                                                     学长来帮忙</a>
 				</div>
 				<div class="header-bottom-grid4">

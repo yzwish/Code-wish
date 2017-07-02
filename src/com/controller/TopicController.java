@@ -18,6 +18,7 @@ import com.dao.TopicDao;
 import com.model.Answer;
 import com.model.Follow;
 import com.model.Question;
+import com.model.Report;
 import com.model.Topic;
 
 
@@ -48,6 +49,22 @@ public class TopicController {
 		       
 	}
 	
+	//显示热门话题及推荐话题
+	@RequestMapping(value = "/showHotTopic",method = RequestMethod.GET) 
+    public ModelAndView showHotTopic(HttpServletRequest request,HttpSession session){  
+		ArrayList<Topic> hotTopicList = TopicDao.showHotTopic();
+		request.setAttribute("hotTopicList", hotTopicList);
+		
+		if(session.getAttribute("id") != null){
+			String userId = (String) session.getAttribute("id");
+			int duty = Integer.parseInt((String)session.getAttribute("duty"));
+			ArrayList<Topic> recommtTopicList=TopicDao.showRecommTopic(userId,duty);
+			request.setAttribute("recommtTopicList", recommtTopicList);
+		}
+		
+		return new ModelAndView("forward:/jsp/topicHome.jsp");
+		
+	}
 	//进入话题主页
 	@RequestMapping(value = "/showTopic",method = RequestMethod.GET) 
     public ModelAndView showTopic(HttpServletRequest request,HttpSession session){  
@@ -154,6 +171,22 @@ public class TopicController {
 		       
 	}
 	
+	//举报
+	@RequestMapping(value = "/report",method = RequestMethod.POST) 
+    public @ResponseBody String report(@RequestBody Report report){
+		
+		return TopicDao.report(report);
+		
+		       
+	}
 	
+	//点赞
+	@RequestMapping(value = "/approveAns",method = RequestMethod.POST) 
+    public @ResponseBody String approveAns(HttpServletRequest request){
+		int id=Integer.parseInt(request.getParameter("answerId"));
+		return TopicDao.approveAns(id);
+		
+		       
+	}
 		
 }

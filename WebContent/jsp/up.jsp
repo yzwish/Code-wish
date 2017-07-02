@@ -89,7 +89,7 @@
                     <li><a href="#">专业解析</a></li>
                      
                     <li>
-                        <a href="topicHome.jsp">学长问答</a> 
+                        <a href="/yzwish/topic/showHotTopic">学长问答</a> 
                     </li>
                     <li>
                         <a href="#">权威咨询</a> 
