@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-07-01 17:37:24
+-- Generation Time: 2017-07-02 18:06:34
 -- 服务器版本： 10.1.21-MariaDB
 -- PHP Version: 7.0.15
 
@@ -38,6 +38,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id`, `password`, `duty`, `status`) VALUES
+('bling', 'bling', 1, 0),
 ('tanvi', 'tanvi', 1, 0);
 
 -- --------------------------------------------------------
@@ -122,10 +123,13 @@ CREATE TABLE `answer` (
 
 INSERT INTO `answer` (`answerId`, `questionId`, `answerContent`, `answerUserId`, `answerTime`, `answerApprovalNum`) VALUES
 (6, 6, '土木', 'tanvi', '2017-07-01 18:15:06', 0),
-(7, 6, '建筑', 'tanvi', '2017-07-01 18:15:17', 0),
-(8, 6, '都挺好的', 'tanvi', '2017-07-01 18:19:57', 0),
+(7, 6, '建筑', 'tanvi', '2017-07-01 18:15:17', 2),
+(8, 6, '都挺好的', 'tanvi', '2017-07-01 18:19:57', 1),
 (9, 6, '我也不知道', 'tanvi', '2017-07-01 19:28:11', 0),
-(10, 6, '你猜', 'tanvi', '2017-07-01 22:41:27', 0);
+(10, 6, '你猜', 'tanvi', '2017-07-01 22:41:27', 0),
+(11, 7, '做梦', 'tanvi', '2017-07-02 14:18:33', 1),
+(12, 11, '都行', 'tanvi', '2017-07-02 17:50:26', 3),
+(13, 12, '多', 'tanvi', '2017-07-02 18:26:55', 0);
 
 -- --------------------------------------------------------
 
@@ -237,7 +241,8 @@ INSERT INTO `follow` (`followId`, `followType`, `followUserId`, `followedId`, `f
 (2, 1, 'tanvi', '6', '2017-07-01 22:57:20'),
 (3, 1, 'tanvi', '7', '2017-07-01 23:00:28'),
 (4, 1, 'tanvi', '8', '2017-07-01 23:03:26'),
-(5, 1, 'tanvi', '9', '2017-07-01 23:10:30');
+(5, 1, 'tanvi', '9', '2017-07-01 23:10:30'),
+(6, 1, 'tanvi', '11', '2017-07-02 17:50:37');
 
 -- --------------------------------------------------------
 
@@ -279,7 +284,8 @@ CREATE TABLE `highschoolstu` (
 --
 
 INSERT INTO `highschoolstu` (`id`, `age`, `hId`, `safetyProblem`, `safetyAnswer`, `sex`, `balance`) VALUES
-('tanvi', 21, '1', 1, 'tanvi', '女', 0);
+('tanvi', 21, '1', 1, 'tanvi', '女', 0),
+('bling', 21, '1', 1, 'bling', '女', 0);
 
 -- --------------------------------------------------------
 
@@ -380,10 +386,12 @@ CREATE TABLE `question` (
 
 INSERT INTO `question` (`questionId`, `topicId`, `questionTitle`, `questionContent`, `quesCreateTime`, `followNumber`, `answerCount`, `lastAnswerTime`, `userId`) VALUES
 (6, 1, '清华的土木和建筑哪个好？', '请学长学姐们给点建议', '2017-06-30 22:55:26', 1, 5, '2017-07-01 22:41:27', 'tanvi'),
-(7, 1, '怎样才能上清华', '  如何在30天内逆袭上清华', '2017-06-30 23:14:03', 1, 0, '2017-06-30 23:14:03', 'tanvi'),
+(7, 1, '怎样才能上清华', '  如何在30天内逆袭上清华', '2017-06-30 23:14:03', 1, 1, '2017-07-02 14:18:34', 'tanvi'),
 (8, 1, '清华好还是隔壁北大好', 'rt', '2017-06-30 23:19:53', 1, 0, '2017-06-30 23:19:53', 'tanvi'),
 (9, 1, '可以蹭课吗', 'rt', '2017-06-30 23:23:40', 1, 0, '2017-06-30 23:23:40', 'tanvi'),
-(10, 1, '计算机专业怎么样', '嗯？', '2017-06-30 23:34:15', 0, 0, '2017-06-30 23:34:15', 'tanvi');
+(10, 1, '计算机专业怎么样', '嗯？', '2017-06-30 23:34:15', 0, 0, '2017-06-30 23:34:15', 'tanvi'),
+(11, 1, '清华 or 北大？', 'rt', '2017-07-02 17:50:11', 1, 1, '2017-07-02 17:50:26', 'tanvi'),
+(12, 2, '北大的漂亮妹子多吗', '嗯？', '2017-07-02 18:25:54', 0, 1, '2017-07-02 18:26:55', 'bling');
 
 -- --------------------------------------------------------
 
@@ -396,9 +404,22 @@ CREATE TABLE `report` (
   `reportType` int(11) NOT NULL,
   `reporterID` varchar(10) NOT NULL,
   `reportedID` varchar(10) NOT NULL,
-  `reportReason` int(11) NOT NULL,
-  `reportTime` datetime NOT NULL
+  `reportReason` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `reportTime` datetime NOT NULL,
+  `reportStatus` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 转存表中的数据 `report`
+--
+
+INSERT INTO `report` (`reportID`, `reportType`, `reporterID`, `reportedID`, `reportReason`, `reportTime`, `reportStatus`) VALUES
+(1, 1, 'tanvi', '6', '其他有害类', '2017-07-02 17:00:08', 0),
+(2, 3, 'tanvi', '6', '赌博类', '2017-07-02 17:42:49', 0),
+(3, 3, 'tanvi', '7', '诈骗类', '2017-07-02 17:45:58', 0),
+(4, 3, 'tanvi', '8', '暴恐类', '2017-07-02 17:46:19', 0),
+(5, 2, 'tanvi', '1', '其他有害类', '2017-07-02 17:57:24', 0),
+(6, 2, 'tanvi', '1', '其他有害类', '2017-07-02 17:58:42', 0);
 
 -- --------------------------------------------------------
 
@@ -443,7 +464,8 @@ CREATE TABLE `topic` (
 --
 
 INSERT INTO `topic` (`topicId`, `topicName`, `topicDiscription`, `followNumber`, `topicState`, `topicAvatar`, `topicBanner`, `topicUserId`) VALUES
-(1, '清华大学', '自强不息，厚德载物', 1, 1, '../topicImages/timg.jpg', '../topicImages/tsinghua.jpg', 'tanvi');
+(1, '清华大学', '自强不息，厚德载物', 1, 1, '../topicImages/timg.jpg', '../topicImages/tsinghua.jpg', 'tanvi'),
+(2, '北京大学', '爱国民主进步科学', 0, 1, '../topicImages/pkuavatar.jpg', '../topicImages/pku.jpg', 'bling');
 
 -- --------------------------------------------------------
 
@@ -492,6 +514,13 @@ CREATE TABLE `university` (
   `comment` varchar(100) CHARACTER SET utf8 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- 转存表中的数据 `university`
+--
+
+INSERT INTO `university` (`universityId`, `universityName`, `type`, `provinceId`, `rank`, `introduction`, `enrollmentPlan`, `faculty`, `comment`) VALUES
+('1', '清华大学', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -515,6 +544,13 @@ CREATE TABLE `volunschool` (
   `rId` varchar(10) NOT NULL,
   `nameDuty` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 转存表中的数据 `volunschool`
+--
+
+INSERT INTO `volunschool` (`vsId`, `id`, `rId`, `nameDuty`) VALUES
+(1, 'tanvi', '1', 2);
 
 --
 -- Indexes for dumped tables
@@ -751,7 +787,7 @@ ALTER TABLE `activityquestion`
 -- 使用表AUTO_INCREMENT `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `answerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `answerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- 使用表AUTO_INCREMENT `comment`
 --
@@ -761,7 +797,7 @@ ALTER TABLE `comment`
 -- 使用表AUTO_INCREMENT `follow`
 --
 ALTER TABLE `follow`
-  MODIFY `followId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `followId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- 使用表AUTO_INCREMENT `message`
 --
@@ -771,17 +807,17 @@ ALTER TABLE `message`
 -- 使用表AUTO_INCREMENT `question`
 --
 ALTER TABLE `question`
-  MODIFY `questionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `questionId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- 使用表AUTO_INCREMENT `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- 使用表AUTO_INCREMENT `topic`
 --
 ALTER TABLE `topic`
-  MODIFY `topicId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `topicId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- 使用表AUTO_INCREMENT `transrecord`
 --
@@ -791,7 +827,7 @@ ALTER TABLE `transrecord`
 -- 使用表AUTO_INCREMENT `volunschool`
 --
 ALTER TABLE `volunschool`
-  MODIFY `vsId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `vsId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- 限制导出的表
 --
