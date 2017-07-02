@@ -17,7 +17,7 @@
 	<link href="<%=request.getContextPath()%>/css/templatemo_style.css" rel="stylesheet" type="text/css">
     <link href="<%=request.getContextPath()%>/css/colrank.css" rel='stylesheet' type='text/css' />
     <link href="<%=request.getContextPath()%>/css/nav.css" rel='stylesheet' type='text/css' />
-    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"></script>
+    <script src="../js/jquery.min.js"></script>
     <link href="<%=request.getContextPath()%>/css/lbt.css" rel='stylesheet' type='text/css' />
     <script src="<%=request.getContextPath()%>/js/lbt.js"></script>
 	<script src="<%=request.getContextPath()%>/js/uploadPreview.js" type="text/javascript"></script>

@@ -43,9 +43,7 @@ public class LoginController {
 	//此函数使用ajax处理登录验证
 	@RequestMapping(value="/checkLogin",method=RequestMethod.POST) 
     public @ResponseBody String checkLogin(@RequestBody Account account,HttpServletRequest request,HttpSession session){  
-        System.out.println("进入checkLogin");
-		System.out.println(account.toString());
-		System.out.println("from:"+account.getFrom());
+       
 		String from=account.getFrom();
 		JSONArray array=new JSONArray();
 		JSONObject jsonObj = new JSONObject();

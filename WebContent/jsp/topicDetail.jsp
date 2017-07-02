@@ -69,7 +69,7 @@ $(document).ready(function(){
 </script>
 </head>
 
-<body>
+<body id="fix-modal-open">
 	<div class="container" style="margin-top:0">
 		<div class="row clearfix">
 			<div class="col-md-12 column topic-detail-banner">
@@ -88,9 +88,84 @@ $(document).ready(function(){
 			</div>
 			<div class="col-md-3 column" style="height: 50px; line-height: 50px;">
 				关注量：<span id="follow-number">${topic.followNumber }</span>
-				<button type="button" class="btn btn-small"
-					style="margin-left: 50px;">举报</button>
+				<a id='modal-report-topic' href='#modal-container-report-topic'  
+							 role="button" class="btn btn-small btn-default" data-toggle="modal" style="margin-left:50px" >举报</a>
 			</div>
+			
+			
+			
+			<div class="modal fade" id="modal-container-report-topic" role="dialog"
+						aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top: 60px;">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">×</button>
+									<h3 class="modal-title" id="myModalLabel">举报</h3>
+								</div>
+								<div class="modal-body" style="margin-left:50px;">
+									<h4>请选择举报理由</h4>
+
+									<div class="radio">
+										<label> <input type="radio" name="reportReasons"
+											id="optionsRadios1" value="广告类" checked>广告类
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio" name="reportReasons"
+											id="optionsRadios2" value="政治有害类"> 政治有害类
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio" name="reportReasons"
+											id="optionsRadios3" value="暴恐类"> 暴恐类
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio" name="reportReasons"
+											id="optionsRadios4" value="淫秽色情类"> 淫秽色情类
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio" name="reportReasons"
+											id="optionsRadios5" value="赌博类"> 赌博类
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio" name="reportReasons"
+											id="optionsRadios6" value="诈骗类" > 诈骗类
+										</label>
+									</div>
+									<div class="radio">
+										<label> <input type="radio" name="reportReasons"
+											id="optionsRadios7" value="其他有害类" > 其他有害类
+										</label>
+									</div>
+									
+
+
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">取消</button>
+									<button type="button" class="btn btn-primary" onclick="reportTopic()">提交</button>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			<div class="col-md-3 column" style="height: 50px; line-height: 50px;">
 			<form action="/yzwish/topic/searchQuestion" method="POST"
 				onsubmit="return checkSearch()">
@@ -144,9 +219,9 @@ $(document).ready(function(){
 			<form action="/yzwish/topic/createQuestion" method="POST"
 				onsubmit="return createQuestion()">
 				<input type="text" id="topicId" name="topicId" value="${topic.topicId }"
-					style="visibility: hidden" /> 
+					style="display:none" /> 
 				<input id="userId" type="text" name="userId"
-					value="${sessionScope.id }" style="visibility: hidden" />
+					value="${sessionScope.id }" style="display:none" />
 
 				<div class="row clearfix">
 					<div class="col-md-12 column">

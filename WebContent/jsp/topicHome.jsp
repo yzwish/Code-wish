@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <jsp:include page="up.jsp" />
 <!DOCTYPE html>
 <html lang="en">
@@ -14,21 +15,23 @@
 
 </head>
 
-<body>
+<body id="fix-modal-open">
 	<div class="container">
 		<div class="row clearfix">
 			<div class="col-md-2 colmn topic-lists-left">
 				<span class="topic-head-title"
 					style="display: block; margin: 40px 0 20px 0">热门话题</span>
 				<ul class="hot-topic-list list-unstyled">
-					<li><a href="#">清华大学</a></li>
-					<li><a href="#">北京大学</a></li>
-					<li><a href="#">复旦大学</a></li>
-					<li><a href="#">上海交通大学</a></li>
-					<li><a href="#">浙江大学</a></li>
+					<c:if test="${hotTopicList !='[]' }">
+					<c:forEach var="topic" items="${requestScope.hotTopicList }">
+					<li><a href="/yzwish/topic/showTopic?topicId=${topic.topicId }" target="_blank">${topic.topicName }</a></li>
+					
+					</c:forEach>
+					</c:if>
+					
 
 				</ul>
-				<button type="button" class="btn btn-info">查看更多</button>
+			
 			</div>
 			<div class="col-md-10 column">
 
@@ -139,70 +142,35 @@
 
 					</div>
 					<div class="right-sec clearfix">
+						<c:if test="${recommtTopicList!=null }">
+						<c:forEach var="topic" items="${requestScope.recommtTopicList }">
 						<div class="recomm-topics-list">
-							<a href="#" class="recomm-topics-img"> <img
-								src="https://gss3.bdstatic.com/84oSdTum2Q5BphGlnYG/timg?wapp&quality=80&size=b150_150&subsize=20480&cut_x=0&cut_w=0&cut_y=0&cut_h=0&sec=1369815402&srctrace&di=ada1d39d760ef9235f4abebe7c882055&wh_rate=null&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2Fce2e42a7d933c8953198e931d71373f0830200a4.jpg"
-								width="95" height="95" alt="清华大学">
+					
+												<a href="/yzwish/topic/showTopic?topicId=${topic.topicId }" target="_blank" class="recomm-topics-img"> <img
+								src="${topic.topicAvatar }"
+								width="95" height="95" alt="${topic.topicName }">
 							</a>
 							<div class="recomm-topics">
 								<p>
-									<a href="#" class="recomm-topic-name">清华大学</a>
+									<a href="/yzwish/topic/showTopic?topicId=${topic.topicId }" target="_blank" class="recomm-topic-name">${topic.topicName }</a>
 								</p>
-								<p class="recomm-topic-intro">自强不息，厚德载物</p>
+								<p class="recomm-topic-intro">${topic.topicDiscription }</p>
 								<span class="follow-item">
-									<p class=" glyphicon glyphicon-user">关注量999</p> <a href="#">关注</a>
+									<p class=" glyphicon glyphicon-user">关注量${topic.followNumber }</p> 
 								</span>
 							</div>
 						</div>
-						<div class="recomm-topics-list">
-							<a href="#" class="recomm-topics-img"> <img
-								src="https://gss3.bdstatic.com/84oSdTum2Q5BphGlnYG/timg?wapp&quality=80&size=b150_150&subsize=20480&cut_x=0&cut_w=0&cut_y=0&cut_h=0&sec=1369815402&srctrace&di=a5011174541c1fc21c92f07e1bada5b2&wh_rate=null&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F728b4710b912c8fc95e9ae6efb039245d688217e.jpg"
-								width="95" height="95" alt="北京大学">
-							</a>
-							<div class="recomm-topics">
-								<p>
-									<a href="#" class="recomm-topic-name">北京大学</a>
-								</p>
-								<p class="recomm-topic-intro">爱国进步民主科学</p>
-								<span class="follow-item">
-									<p class=" glyphicon glyphicon-user">关注量999</p> <a href="#">关注</a>
-								</span>
-							</div>
-						</div>
-						<div class="recomm-topics-list">
-							<a href="#" class="recomm-topics-img"> <img
-								src="https://gss3.bdstatic.com/84oSdTum2Q5BphGlnYG/timg?wapp&quality=80&size=b150_150&subsize=20480&cut_x=0&cut_w=0&cut_y=0&cut_h=0&sec=1369815402&srctrace&di=5d3c1c44e331f62efa65a68a4d5dd999&wh_rate=null&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F8644ebf81a4c510fb0e434a86159252dd42aa564.jpg"
-								width="95" height="95" alt="复旦大学">
-							</a>
-							<div class="recomm-topics">
-								<p>
-									<a href="#" class="recomm-topic-name">复旦大学</a>
-								</p>
-								<p class="recomm-topic-intro">博学而笃志，切问而近思</p>
-								<span class="follow-item">
-									<p class=" glyphicon glyphicon-user">关注量999</p> <a href="#">关注</a>
-								</span>
-							</div>
-						</div>
-						<div class="recomm-topics-list">
-							<a href="#" class="recomm-topics-img"> <img
-								src="https://gss3.bdstatic.com/84oSdTum2Q5BphGlnYG/timg?wapp&quality=80&size=b150_150&subsize=20480&cut_x=0&cut_w=0&cut_y=0&cut_h=0&sec=1369815402&srctrace&di=e1ba8b1192f3920f82b7c5082c5d8395&wh_rate=null&src=http%3A%2F%2Ftieba.baidu.com%2Ftb%2Fcms%2Fngmis%2Ffile_1415349880335.jpg"
-								width="95" height="95" alt="上海交通大学">
-							</a>
-							<div class="recomm-topics">
-								<p>
-									<a href="#" class="recomm-topic-name">上海交通大学</a>
-								</p>
-								<p class="recomm-topic-intro">饮水思源，爱国荣校</p>
-								<span class="follow-item">
-									<p class=" glyphicon glyphicon-user">关注量999</p> <a href="#">关注</a>
-								</span>
-							</div>
-						</div>
+					</c:forEach>
+						
+						</c:if>
+					
+						
+						
 
 					</div>
 				</div>
 			</div>
+		</div>
 		</div>
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/bootstrap.min.js"></script>
