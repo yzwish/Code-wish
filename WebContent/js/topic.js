@@ -1,7 +1,12 @@
 function searchTopic() {
     var searchValue = $("#search-topic").val();
     if(searchValue!=""){
+    	var valueLen=searchValue.length;
     	
+    	if(valueLen>50){
+    		alert("搜索内容长度不能超过50！");
+    		return false;
+    	}
 	    var topic=new Object();
 		topic.topicName=searchValue;
 		var info=JSON.stringify(topic);
@@ -196,7 +201,10 @@ function answerQuestion(){
 		 if(answerContent == ""){
 			 $("#answer-hint").html("回复内容不能为空");
 			 return false;
-		 }else{
+		 }else if(answerContent.length>200){
+			 $("#answer-hint").html("回复内容长度不能超过200");
+			 return false;
+		 }
 			 
 			 
 			    var answer = new Object();
@@ -230,16 +238,21 @@ function answerQuestion(){
 			    });
 			
 		 }
-	}
+	
 }
 
 function checkSearch(){
 	var searchWord=$("#searchWord").val();
 	if($.trim(searchWord)==""){
 		return false;
+	}else if(searchWord.length>100){
+		alert("搜索内容长度不能超过100！");
+		return false;
 	}else{
+		
 		return true;
 	}
+	
 
 }
 
