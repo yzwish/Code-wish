@@ -192,13 +192,43 @@ function answerQuestion(){
 			return false;
 	}else{
 	 
-		 var answerContent=$("#answerContent").val()
+		 var answerContent=$("#answerContent").val();
 		 if(answerContent == ""){
 			 $("#answer-hint").html("回复内容不能为空");
 			 return false;
 		 }else{
 			 
-			 return true;
+			 
+			    var answer = new Object();
+			    var thisQuesId=$("#questionId").val();
+			   answer.answerUserId=$("#answerUserId").val();
+			   answer.questionId=thisQuesId;
+			   answer.answerContent=$("#answerContent").val()
+			    var info = JSON.stringify(answer);
+				$.ajax({
+			        type: "POST",
+			        contentType:'application/json',
+			        url: "/yzwish/topic/answerQuestion",
+			        data: info,
+			        success: function(data, status) {
+			            if (data == "error") {
+			                alert("服务器出错啦")
+			                
+			            }else{
+			            	if(data == "award"){
+			            		alert("回答成功！奖励1虚拟币~");
+			            	}else if(data == "overflow"){
+				            	alert("回答成功！本月奖励虚拟币数量已达上限100~再接再厉哦");
+				            }
+			            	 window.location.href = "/yzwish/topic/showQA?questionId="+thisQuesId;
+			            	 
+			            }
+			        },
+			        error: function() {
+			            alert("回答失败");
+			        }
+			    });
+			
 		 }
 	}
 }
@@ -271,6 +301,46 @@ function followTopic(){
 	}
 }
 
+
+function cancelFollowTopic(){
+
+
+	var topicId=$("#topicId").val();
+    var userId=$("#userId").val();
+    var follow = new Object();
+    follow.followedId = topicId;
+    follow.followUserId = userId;
+    follow.followType = 2;
+    var info = JSON.stringify(follow);
+	$.ajax({
+        type: "POST",
+        contentType:'application/json',
+        url: "/yzwish/topic/cancleFollow",
+        data: info,
+        success: function(data, status) {
+            if (data == "error") {
+                alert("服务器出错啦")
+                
+            }else{
+            	 var flwc='<button type="button" class="btn btn-primary"'
+ 					+'style="font-size: 16px;"><span  class=" glyphicon glyphicon-plus" '
+ 					+'onclick="followTopic()">关注</span></button>';
+ 				
+ 	                $("#followTopic").html(flwc);
+            
+            	var fn=Number($("#follow-number").html());
+            	fn=fn-1;
+            	$("#follow-number").html(fn);
+            }
+        },
+        error: function() {
+            alert("取关失败");
+        }
+    });
+	
+}
+
+
 function followQuestion(){
 
 	var flag=false;
@@ -326,7 +396,37 @@ function followQuestion(){
 	}
 }
 
+function cancelFollowQues(){
 
+	
+		var questionId=$("#questionId").val();
+	    var userId=$("#answerUserId").val();
+	    var follow = new Object();
+	    follow.followedId = questionId;
+	    follow.followUserId = userId;
+	    follow.followType = 1;
+	    var info = JSON.stringify(follow);
+		$.ajax({
+	        type: "POST",
+	        contentType:'application/json',
+	        url: "/yzwish/topic/cancleFollow",
+	        data: info,
+	        success: function(data, status) {
+	            if (data == "error") {
+	                alert("服务器出错啦")
+	                
+	            }else{
+	            	var fic = '<button type="button" class="btn btn-primary"'
+						+ 'style="margin-top: 20px;"  onclick="followQuestion()">关注问题</button>';
+	            	$("#followQuesItem").html(fic);
+	            }
+	        },
+	        error: function() {
+	            alert("取关失败");
+	        }
+	    });
+	
+}
 
 
 function reportQuestion(){

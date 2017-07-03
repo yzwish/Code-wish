@@ -49,8 +49,8 @@ $(document).ready(function(){
 				
 	                $("#followTopic").html(flw);
 	            }else{
-	            	var followItem='<button type="button" class="btn" disabled style="font-size: 16px;">'
-					+'<span class="fa fa-check">已关注</span></button>';
+	            	var followItem='<button type="button" class="btn"  style="font-size: 16px;">'
+					+'<span class="fa fa-check" onclick="cancelFollowTopic()">已关注</span></button>';
 	            	$("#followTopic").html(followItem);
 	            	
 	            }
