@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-07-02 18:06:34
+-- Generation Time: 2017-07-03 10:00:08
 -- 服务器版本： 10.1.21-MariaDB
 -- PHP Version: 7.0.15
 
@@ -38,7 +38,7 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`id`, `password`, `duty`, `status`) VALUES
-('bling', 'bling', 1, 0),
+('bling', 'bling', 2, 0),
 ('tanvi', 'tanvi', 1, 0);
 
 -- --------------------------------------------------------
@@ -129,7 +129,18 @@ INSERT INTO `answer` (`answerId`, `questionId`, `answerContent`, `answerUserId`,
 (10, 6, '你猜', 'tanvi', '2017-07-01 22:41:27', 0),
 (11, 7, '做梦', 'tanvi', '2017-07-02 14:18:33', 1),
 (12, 11, '都行', 'tanvi', '2017-07-02 17:50:26', 3),
-(13, 12, '多', 'tanvi', '2017-07-02 18:26:55', 0);
+(13, 12, '多', 'tanvi', '2017-07-02 18:26:55', 1),
+(14, 10, '挺好的', 'bling', '2017-07-03 11:25:26', 0),
+(15, 10, '近几年就业前景不错', 'bling', '2017-07-03 11:26:19', 0),
+(16, 10, '好', 'bling', '2017-07-03 11:37:04', 0),
+(17, 10, '不错呀', 'bling', '2017-07-03 11:37:33', 0),
+(18, 10, '很好很好', 'bling', '2017-07-03 11:38:58', 0),
+(21, 10, '不错不错', 'bling', '2017-07-03 12:11:40', 0),
+(22, 11, '清华', 'tanvi', '2017-07-03 15:29:04', 0),
+(23, 9, '可以啊', 'bling', '2017-07-03 15:30:29', 1),
+(24, 9, '可以可以', 'bling', '2017-07-03 15:31:06', 0),
+(25, 9, '嗯', 'bling', '2017-07-03 15:31:32', 0),
+(26, 9, 'of course', 'tanvi', '2017-07-03 15:58:17', 0);
 
 -- --------------------------------------------------------
 
@@ -242,7 +253,8 @@ INSERT INTO `follow` (`followId`, `followType`, `followUserId`, `followedId`, `f
 (3, 1, 'tanvi', '7', '2017-07-01 23:00:28'),
 (4, 1, 'tanvi', '8', '2017-07-01 23:03:26'),
 (5, 1, 'tanvi', '9', '2017-07-01 23:10:30'),
-(6, 1, 'tanvi', '11', '2017-07-02 17:50:37');
+(6, 1, 'tanvi', '11', '2017-07-02 17:50:37'),
+(8, 1, 'bling', '7', '2017-07-03 12:25:57');
 
 -- --------------------------------------------------------
 
@@ -386,11 +398,11 @@ CREATE TABLE `question` (
 
 INSERT INTO `question` (`questionId`, `topicId`, `questionTitle`, `questionContent`, `quesCreateTime`, `followNumber`, `answerCount`, `lastAnswerTime`, `userId`) VALUES
 (6, 1, '清华的土木和建筑哪个好？', '请学长学姐们给点建议', '2017-06-30 22:55:26', 1, 5, '2017-07-01 22:41:27', 'tanvi'),
-(7, 1, '怎样才能上清华', '  如何在30天内逆袭上清华', '2017-06-30 23:14:03', 1, 1, '2017-07-02 14:18:34', 'tanvi'),
+(7, 1, '怎样才能上清华', '  如何在30天内逆袭上清华', '2017-06-30 23:14:03', 2, 1, '2017-07-02 14:18:34', 'tanvi'),
 (8, 1, '清华好还是隔壁北大好', 'rt', '2017-06-30 23:19:53', 1, 0, '2017-06-30 23:19:53', 'tanvi'),
-(9, 1, '可以蹭课吗', 'rt', '2017-06-30 23:23:40', 1, 0, '2017-06-30 23:23:40', 'tanvi'),
-(10, 1, '计算机专业怎么样', '嗯？', '2017-06-30 23:34:15', 0, 0, '2017-06-30 23:34:15', 'tanvi'),
-(11, 1, '清华 or 北大？', 'rt', '2017-07-02 17:50:11', 1, 1, '2017-07-02 17:50:26', 'tanvi'),
+(9, 1, '可以蹭课吗', 'rt', '2017-06-30 23:23:40', 1, 4, '2017-07-03 15:58:18', 'tanvi'),
+(10, 1, '计算机专业怎么样', '嗯？', '2017-06-30 23:34:15', 0, 6, '2017-07-03 12:11:40', 'tanvi'),
+(11, 1, '清华 or 北大？', 'rt', '2017-07-02 17:50:11', 1, 2, '2017-07-03 15:29:04', 'tanvi'),
 (12, 2, '北大的漂亮妹子多吗', '嗯？', '2017-07-02 18:25:54', 0, 1, '2017-07-02 18:26:55', 'bling');
 
 -- --------------------------------------------------------
@@ -495,6 +507,14 @@ CREATE TABLE `transrecord` (
   `virtualNum` double NOT NULL,
   `way` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- 转存表中的数据 `transrecord`
+--
+
+INSERT INTO `transrecord` (`trId`, `id`, `time`, `virtualNum`, `way`) VALUES
+(2, 'bling', '2017-07-03 15:30:30', 1, 2),
+(3, 'bling', '2017-07-03 15:31:06', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -787,7 +807,7 @@ ALTER TABLE `activityquestion`
 -- 使用表AUTO_INCREMENT `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `answerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `answerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- 使用表AUTO_INCREMENT `comment`
 --
@@ -797,7 +817,7 @@ ALTER TABLE `comment`
 -- 使用表AUTO_INCREMENT `follow`
 --
 ALTER TABLE `follow`
-  MODIFY `followId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `followId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- 使用表AUTO_INCREMENT `message`
 --
@@ -822,7 +842,7 @@ ALTER TABLE `topic`
 -- 使用表AUTO_INCREMENT `transrecord`
 --
 ALTER TABLE `transrecord`
-  MODIFY `trId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `trId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- 使用表AUTO_INCREMENT `volunschool`
 --
