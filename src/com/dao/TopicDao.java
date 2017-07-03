@@ -2,11 +2,14 @@ package com.dao;
 
 import java.io.File;
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -453,59 +456,43 @@ public class TopicDao {
     				return "error";
     			}else{
     				if(duty==2||duty==3){
-    					Calendar now = Calendar.getInstance();  
-    					int year =  now.get(Calendar.YEAR);
-    					int month = (now.get(Calendar.MONTH) + 1);
-    			        System.out.println("年: " + year);  
-    			        System.out.println("月: " + month);  
-    			        String currTime = ""+year+month;
-    			        System.out.println(currTime);
-    					String sql3 = "SELECT virtualNum FROM transrecord WHERE id=? AND time=? AND way =2";
+    					Date currentTime =new Date();
+    				    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+    				    String dateString = formatter.format(currentTime);
+    					String sql3 = "SELECT SUM(virtualNum) AS totalCurrency FROM transrecord WHERE id=?  AND way =2 AND time"
+    							+ " LIKE '%"+dateString+"%' ;";
     					ptmt = conn.prepareStatement(sql3);
     					ptmt.setString(1,answer.getAnswerUserId());
-    					ptmt.setString(2,currTime);
     					
     	    			rst = ptmt.executeQuery();	
     	    			if(rst.next()){
-    	    				double num = rst.getDouble("virtualNum");
+    	    				double num = rst.getDouble("totalCurrency");
     	    				//每月奖励虚拟币上限100
-    	    				if(num<100){
-    	    					String sql4 = "UPDATE transrecord SET virtualNum=virtualNum+1 "
-        	    						+ "WHERE id=? AND time=? AND way =2";
-        	    				ptmt = conn.prepareStatement(sql4);
-            					ptmt.setString(1,answer.getAnswerUserId());
-            					ptmt.setString(2,currTime);
-            					
-            	    			int rs3 = ptmt.executeUpdate();
-            	    			if(rs3==0){
-            	    				
-            	    				return "error";
-            	    			}else{
-            	    				return "award";
-            	    			}
-    	    				}else{
+    	    				if(num>=100){
+    	    					
     	    					return "overflow";
     	    				}
     	    				
     	    				
-    	    			}else{
+    	    			}
     	    				
-    	    				String sql5 = "INSERT INTO transrecord VALUES (null,?,?,1,2);";
-    	    				ptmt = conn.prepareStatement(sql5);
+    	    				String sql4 = "INSERT INTO  transrecord VALUES (null,?,now(),1,2)";
+    	    				ptmt = conn.prepareStatement(sql4);
         					ptmt.setString(1,answer.getAnswerUserId());
-        					ptmt.setString(2,currTime);
-        					int rs4 = ptmt.executeUpdate();
-        	    			if(rs4==0){
+        					
+        	    			int rs3 = ptmt.executeUpdate();
+        	    			if(rs3==0){
         	    				
         	    				return "error";
         	    			}else{
         	    				return "award";
         	    			}
-    	    			}
+    	    			
     					
     				}else{
     					return "ok";
     				}
+    			
     			}
     		}
     			
