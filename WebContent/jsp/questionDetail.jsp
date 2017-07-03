@@ -46,7 +46,7 @@
 														+ 'style="margin-top: 20px;"  onclick="followQuestion()">关注问题</button>';
 												$("#followQuesItem").html(fi);
 											} else {
-												var followQuesItem = '<button type="button" class="btn fa fa-check" disabled style="margin-top:20px;">'
+												var followQuesItem = '<button type="button" class="btn fa fa-check"  style="margin-top:20px;" onclick="cancelFollowQues()">'
 														+ '已关注</button>';
 												$("#followQuesItem").html(
 														followQuesItem);
@@ -268,11 +268,7 @@
 
 		</div>
 
-		<div class="row clearfix" style="margin-top: 50px;">
-			<div class="col-md-6 col-md-offset-6 column">
-				<button type="button" class="btn btn-info btn-lg">查看更多</button>
-			</div>
-		</div>
+		
 		<div class="row clearfix ques-detail-comm">
 			<div class="col-md-2 column">
 				<c:choose>
@@ -288,8 +284,7 @@
 
 			</div>
 			<div class="col-md-10 column">
-				<form action="/yzwish/topic/answerQuestion" method="POST"
-					onsubmit="return answerQuestion()">
+				<form>
 					<input type="text" id="questionId" name="questionId"
 						value="${question.questionId }" style="visibility: hidden" /> <input
 						type="text" id="answerUserId" name="answerUserId"
@@ -301,7 +296,7 @@
 						class="ques-comm-txt"></textarea>
 					<p id="answer-hint" style="color: red"></p>
 					<div>
-						<button type="submit" class="btn btn-primary" style="float: right">评论</button>
+						<button type="button" class="btn btn-primary" style="float: right" onclick="answerQuestion()">评论</button>
 					</div>
 				</form>
 			</div>

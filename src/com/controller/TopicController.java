@@ -1,10 +1,13 @@
 package com.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -131,14 +134,10 @@ public class TopicController {
 	
 	//回答问题
 	@RequestMapping(value = "/answerQuestion",method = RequestMethod.POST) 
-    public ModelAndView answerQuestion(Answer answer){
-		
-		String result = TopicDao.answerQuestion(answer);
-		if(result=="ok"){
-			return new ModelAndView("redirect:/topic/showQA?questionId="+answer.getQuestionId());
-		}else{
-			return new ModelAndView("redirect:/topic/showQA?questionId="+answer.getQuestionId());
-		}
+    public @ResponseBody String answerQuestion(@RequestBody Answer answer, HttpSession session){
+		int duty = Integer.parseInt((String)session.getAttribute("duty"));
+		String result = TopicDao.answerQuestion(answer,duty);
+		return result;
 	}
 	
 	//搜索问题
@@ -161,6 +160,15 @@ public class TopicController {
 		
 		       
 	}
+	
+	@RequestMapping(value = "/cancleFollow",method = RequestMethod.POST) 
+    public @ResponseBody String cancleFollow(@RequestBody Follow follow){
+		
+		return TopicDao.cancleFollow(follow);
+		
+		       
+	}
+	
 	
 	//检查用户是否已关注
 	@RequestMapping(value = "/checkFollow",method = RequestMethod.POST) 
