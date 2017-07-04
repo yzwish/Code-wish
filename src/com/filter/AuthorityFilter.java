@@ -1,5 +1,7 @@
 package com.filter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.*;
 
 import com.dao.UserDao;
+import com.dao.VisitsNumDao;
 
 
 @WebFilter(
@@ -46,6 +49,11 @@ public class AuthorityFilter implements Filter {
        HttpServletRequest hrequest = (HttpServletRequest)request;
        HttpSession session = hrequest.getSession(true);
 
+       //插入网站访问量
+       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+       String today=df.format(new Date());	
+       VisitsNumDao.addVisitsNum(today);
+       
        //读取系统通知
        if(session.getAttribute("id")!=null){
     	    String id=(String) session.getAttribute("id");
