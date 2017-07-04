@@ -63,7 +63,7 @@ text-align:center;
 					var thisMId="${msg.mId}";
 					var thisContext="${msg.context }";
 					
-					var partContext=thisContext.substring(0,30);
+					var partContext=thisContext.substring(0,10);
 					if(thisContext.length>30)
 					    $('#pc-'+thisMId).html(partContext+'...');
 					else{
