@@ -32,7 +32,7 @@ text-align:center;
 			</h1>
 		    <div style="margin:0 auto;width:600px;margin-top:20px">
 		    <form   id="f1" name="f1">
-		    <table style="font-size:15px;text-align:center" id="tblSort" sortCol="-1" class="table table-bordered">
+		    <table style="font-size:15px;text-align:center" id="tblSort" sortCol="-1" class="table">
 					<thead>
 					<tr>
 					<th style="width:50px;text-align:center;cursor:pointer" onclick="sortTable('tblSort',0,'date')">通知内容</th>

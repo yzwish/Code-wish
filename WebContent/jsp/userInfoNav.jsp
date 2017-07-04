@@ -9,7 +9,7 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/message.js"></script>
 <style>
 body{
-
+background-image:url("../images/userInfobg.jpg");
 }
 </style>
 </head>

@@ -221,7 +221,7 @@ border:1px solid red;
 					<h4>查询结果</h4>
 					<div>
 					<form   id="f1" name="f1">
-					<table style="font-size:15px" id="tblSort" sortCol="-1" class="table table-bordered">
+					<table style="font-size:15px" id="tblSort" sortCol="-1" class="table">
 					<thead>
 					<tr>
 					<th style="width:200px;cursor:pointer" onclick="sortTable('tblSort',0,'date')">时间</th>
