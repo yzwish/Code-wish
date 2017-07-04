@@ -37,12 +37,12 @@
 					<a href="<%=request.getContextPath()%>/jsp/admin_Menu.jsp">管理员后台</a> <span class="divider">/</span>
 				</li>
 				<li class="active">
-					用户审核--老师
+					用户审核--老师&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: bold;" color=green>${message1}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: bold;" color=blue>${message2}</font>
 				</li>
 			</ul>
 		</div>
 	</div>
-
+	
 	
 	
 		<div class="row">
@@ -115,7 +115,7 @@
 				</div>
 				<div class="col-md-6">
 								<label>选择不通过理由：</label>
-				<select id="Treason" name="Treason"><option value="">选择理由</option>
+				<select id="Treason" name="Treason">
          <option value="信息不属实">信息不属实</option>
          <option value="照片不清晰">照片不清晰</option>
          </select>

@@ -41,7 +41,7 @@
 					<a href="<%=request.getContextPath()%>/jsp/admin_Menu.jsp">管理员后台</a> <span class="divider">/</span>
 				</li>
 				<li class="active">
-					账号管理--显示举报用户
+					账号管理--显示举报用户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: bold;" color=green>${message1}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: bold;" color=blue>${message2}</font>
 				</li>
 			</ul>
 		</div>
@@ -430,7 +430,7 @@
 		<br>
 			<div class="row">
 			<label>选择封禁时间：</label>
-		<select id="BTime" name="BTime"><option value="3"> </option>
+		<select id="BTime" name="BTime">
          <option value="3">3天</option>
          <option value="15">15天</option>
          <option value="30">1个月</option>

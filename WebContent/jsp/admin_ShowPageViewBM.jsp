@@ -49,7 +49,9 @@
 
 		</div>
 		<div class="col-md-5">
-		<label>访问量：</label><font style="font-weight: bold;" color=red>${view}</font>
+		<label>时间：</label><font style="font-weight: bold;" color=black>${time}</font><br>
+		<label>访问量：</label><font style="font-weight: bold;" color=black>${view}</font><br>
+		<font style="font-weight: bold;" color=red>${m}</font>
 		</div>
 		<div class="col-md-1">
 		</div>

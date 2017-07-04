@@ -19,7 +19,7 @@
 					<a href="<%=request.getContextPath()%>/jsp/admin_Menu.jsp">管理员后台</a> <span class="divider">/</span>
 				</li>
 				<li class="active">
-					账号管理--显示封禁用户
+					账号管理--显示封禁用户&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: bold;" color=green>${message}</font>
 				</li>
 			</ul>
 		</div>

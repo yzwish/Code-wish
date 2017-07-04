@@ -36,7 +36,7 @@
 					<a href="<%=request.getContextPath()%>/jsp/admin_Menu.jsp">管理员后台</a> <span class="divider">/</span>
 				</li>
 				<li class="active">
-					话题管理--审核话题
+					话题管理--审核话题&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: bold;" color=green>${message1}</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-weight: bold;" color=blue>${message2}</font>
 				</li>
 			</ul>
 		</div>
