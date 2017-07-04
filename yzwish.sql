@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-07-04 10:12:19
+-- Generation Time: 2017-07-04 12:22:53
 -- 服务器版本： 10.1.21-MariaDB
 -- PHP Version: 7.0.15
 
@@ -53,10 +53,11 @@ CREATE TABLE `activity` (
   `info` varchar(100) CHARACTER SET utf8 NOT NULL,
   `id` varchar(10) NOT NULL,
   `startTime` datetime NOT NULL,
-  `duration` datetime NOT NULL,
+  `duration` int(11) NOT NULL,
   `leastNumOfEnroll` int(11) NOT NULL,
   `activityStatus` int(11) NOT NULL,
-  `numOfEnroll` int(11) NOT NULL
+  `numOfEnroll` int(11) NOT NULL,
+  `cancelReason` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -330,8 +331,20 @@ CREATE TABLE `major` (
   `majorDiscription` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `coreCourses` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `employment` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
-  `rank` int(11) DEFAULT NULL
+  `rank` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `kindId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `majorkind`
+--
+
+CREATE TABLE `majorkind` (
+  `id` int(11) NOT NULL,
+  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -340,6 +353,7 @@ CREATE TABLE `major` (
 --
 
 CREATE TABLE `majorlog` (
+  `majorLogId` int(11) NOT NULL,
   `universityId` varchar(5) DEFAULT NULL,
   `majorId` varchar(6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -418,7 +432,7 @@ CREATE TABLE `report` (
   `reportType` int(11) NOT NULL,
   `reporterID` varchar(10) NOT NULL,
   `reportedID` varchar(10) NOT NULL,
-  `reportReason` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `reportReason` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `reportTime` datetime NOT NULL,
   `reportStatus` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -697,12 +711,20 @@ ALTER TABLE `hprivates`
 -- Indexes for table `major`
 --
 ALTER TABLE `major`
-  ADD PRIMARY KEY (`majorId`);
+  ADD PRIMARY KEY (`majorId`),
+  ADD KEY `major_ibfk_1` (`kindId`);
+
+--
+-- Indexes for table `majorkind`
+--
+ALTER TABLE `majorkind`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `majorlog`
 --
 ALTER TABLE `majorlog`
+  ADD PRIMARY KEY (`majorLogId`),
   ADD KEY `mlm_idx` (`majorId`),
   ADD KEY `mlu` (`universityId`);
 
@@ -820,6 +842,16 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `follow`
   MODIFY `followId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- 使用表AUTO_INCREMENT `majorkind`
+--
+ALTER TABLE `majorkind`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `majorlog`
+--
+ALTER TABLE `majorlog`
+  MODIFY `majorLogId` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- 使用表AUTO_INCREMENT `message`
 --
@@ -946,6 +978,12 @@ ALTER TABLE `highschoolstu`
 --
 ALTER TABLE `hprivates`
   ADD CONSTRAINT `hpa` FOREIGN KEY (`privateUserId`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- 限制表 `major`
+--
+ALTER TABLE `major`
+  ADD CONSTRAINT `major_ibfk_1` FOREIGN KEY (`kindId`) REFERENCES `majorkind` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- 限制表 `majorlog`
