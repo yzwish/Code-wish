@@ -48,17 +48,32 @@ public class TopicDao {
         }  
 		
 	}
+	
+	
 	//发起话题
 	public static String createTopic(Topic topic,String userId){
 		
+		String sql2="SELECT * FROM topic WHERE topicName=?";
+		Connection conn = ConnectionManager.getInstance().getConnection();  
+		PreparedStatement ptmt=null;
+		ResultSet rst=null;
+		try {
+			ptmt = conn.prepareStatement(sql2);	
+			ptmt.setString(1, topic.getTopicName());
+			rst = ptmt.executeQuery();	
+    		//服务器错误
+    		if(rst.next()){
+    			return "topicName already exist!";
+    		}
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		//上传话题banner和头像
 		if(!uploadTopicPic(topic)){
 			return "error";
 		}
 			
-		Connection conn = ConnectionManager.getInstance().getConnection();  
-		PreparedStatement ptmt=null;
-		ResultSet rst=null;
         String sql="INSERT INTO topic VALUES (null,?,?,0,0,?,?,?)";
         try{
         	ptmt = conn.prepareStatement(sql);				
@@ -90,7 +105,7 @@ public class TopicDao {
 	public static String searchTopic(Topic topic){
 
 		String sql="SELECT topicId,topicName FROM topic WHERE topicState=1"
-				+ " AND topicName LIKE '%"+topic.getTopicName()+"%'";
+				+ " AND topicName LIKE '%"+topic.getTopicName()+"%' LIMIT 15 ;";
 		Connection conn = ConnectionManager.getInstance().getConnection();  
 		PreparedStatement ptmt=null;
 		ResultSet rst=null;
@@ -431,10 +446,15 @@ public class TopicDao {
 		
 	}
 	
+	
 	//回答问题
 	public static String answerQuestion(Answer answer,int duty){
 		String sql="INSERT INTO answer VALUES (null,?,?,?,now(),0);";
-		
+		String sqlMess="INSERT INTO message VALUES (null,?,?,now(),0);";
+		String messUserId=answer.getQuestionUserId();
+		String context="您的提问有新的回答：<a href='/yzwish/topic/showQA?questionId="+answer.getQuestionId()+"' target='_blank'>"+
+		answer.getQuestionTitle()+"</a>";
+		String result="";
 		Connection conn = ConnectionManager.getInstance().getConnection();  
 		PreparedStatement ptmt=null;
 		ResultSet rst=null;
@@ -469,8 +489,18 @@ public class TopicDao {
     	    				double num = rst.getDouble("totalCurrency");
     	    				//每月奖励虚拟币上限100
     	    				if(num>=100){
+    	    					//通知提问用户
+    	    					ptmt = conn.prepareStatement(sqlMess);
+    	    					ptmt.setString(1,messUserId);
+    	    					ptmt.setString(2,context);
+    	    					int res1=ptmt.executeUpdate();
+    	    					if(res1==0){
+    	    						return "error";
+    	    					}else{
+    	    						
+    	    						return "overflow";
+    	    					}
     	    					
-    	    					return "overflow";
     	    				}
     	    				
     	    				
@@ -485,12 +515,38 @@ public class TopicDao {
         	    				
         	    				return "error";
         	    			}else{
-        	    				return "award";
+        	    				
+        	    				//通知提问用户
+        	    				ptmt = conn.prepareStatement(sqlMess);
+    	    					ptmt.setString(1,messUserId);
+    	    					ptmt.setString(2,context);
+    	    					int res2=ptmt.executeUpdate();
+    	    					if(res2==0){
+    	    						return "error";
+    	    					}else{
+    	    						
+    	    						return "award";
+    	    					}
+        	    				
+        	    				
         	    			}
     	    			
     					
     				}else{
-    					return "ok";
+    					
+    					//通知提问用户
+    					ptmt = conn.prepareStatement(sqlMess);
+    					ptmt.setString(1,messUserId);
+    					ptmt.setString(2,context);
+    					int res3=ptmt.executeUpdate();
+    					if(res3==0){
+    						return "error";
+    					}else{
+    						
+    						return "ok";
+    					}
+    					
+    					
     				}
     			
     			}

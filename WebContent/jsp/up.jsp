@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/bootstrap.min.css">
+    <link href="../css/style.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/css/navf.css" rel='stylesheet' type='text/css' />
     <link href="<%=request.getContextPath()%>/css/colrankf.css" rel='stylesheet' type='text/css' />
     <link href="<%=request.getContextPath()%>/css/lbtf.css" rel='stylesheet' type='text/css' />

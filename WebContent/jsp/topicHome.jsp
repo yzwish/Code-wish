@@ -16,7 +16,7 @@
 </head>
 
 <body id="fix-modal-open">
-	<div class="container">
+	<div class="container" style="min-height:600px;">
 		<div class="row clearfix">
 			<div class="col-md-2 colmn topic-lists-left">
 				<span class="topic-head-title"
@@ -172,6 +172,7 @@
 			</div>
 		</div>
 		</div>
+		<jsp:include page="down.jsp" />
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/bootstrap.min.js"></script>
 		<script src="../js/uploadPreview.js" type="text/javascript"></script>

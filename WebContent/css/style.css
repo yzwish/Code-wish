@@ -172,13 +172,7 @@ i.googlepluse{
 .top-menu ul li a.active{
 	color:#83774A;
 }
-.header-top {
-	background: rgba(255, 255, 255, 0.32);
-	padding: 2em 30px;
-	float: left;
-	width: 92%;
-	height:100px;
-}
+
 .banner-info h1 a{
 	color:#fff;
 	font-family: 'Niconne', cursive;
@@ -1244,10 +1238,7 @@ a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
 .btn-primary {
   border-color: #fff !important;
 }
-.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
-  border-color: #FFF !important;
-   background-color: #a6192e !important;
-}
+
 .cmnt-icon-left a img {
 	width: 100%;
 }
