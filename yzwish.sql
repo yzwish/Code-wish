@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2017-07-03 10:00:08
+-- Generation Time: 2017-07-04 10:12:19
 -- 服务器版本： 10.1.21-MariaDB
 -- PHP Version: 7.0.15
 
@@ -140,7 +140,9 @@ INSERT INTO `answer` (`answerId`, `questionId`, `answerContent`, `answerUserId`,
 (23, 9, '可以啊', 'bling', '2017-07-03 15:30:29', 1),
 (24, 9, '可以可以', 'bling', '2017-07-03 15:31:06', 0),
 (25, 9, '嗯', 'bling', '2017-07-03 15:31:32', 0),
-(26, 9, 'of course', 'tanvi', '2017-07-03 15:58:17', 0);
+(26, 9, 'of course', 'tanvi', '2017-07-03 15:58:17', 0),
+(27, 7, '努力加天赋', 'tanvi', '2017-07-04 15:38:46', 1),
+(28, 7, '命运', 'tanvi', '2017-07-04 15:41:55', 0);
 
 -- --------------------------------------------------------
 
@@ -351,7 +353,7 @@ CREATE TABLE `majorlog` (
 CREATE TABLE `message` (
   `mId` int(11) NOT NULL,
   `id` varchar(10) NOT NULL,
-  `context` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `context` varchar(500) CHARACTER SET utf8 NOT NULL,
   `time` datetime NOT NULL,
   `isRead` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -398,7 +400,7 @@ CREATE TABLE `question` (
 
 INSERT INTO `question` (`questionId`, `topicId`, `questionTitle`, `questionContent`, `quesCreateTime`, `followNumber`, `answerCount`, `lastAnswerTime`, `userId`) VALUES
 (6, 1, '清华的土木和建筑哪个好？', '请学长学姐们给点建议', '2017-06-30 22:55:26', 1, 5, '2017-07-01 22:41:27', 'tanvi'),
-(7, 1, '怎样才能上清华', '  如何在30天内逆袭上清华', '2017-06-30 23:14:03', 2, 1, '2017-07-02 14:18:34', 'tanvi'),
+(7, 1, '怎样才能上清华', '  如何在30天内逆袭上清华', '2017-06-30 23:14:03', 2, 3, '2017-07-04 15:41:55', 'tanvi'),
 (8, 1, '清华好还是隔壁北大好', 'rt', '2017-06-30 23:19:53', 1, 0, '2017-06-30 23:19:53', 'tanvi'),
 (9, 1, '可以蹭课吗', 'rt', '2017-06-30 23:23:40', 1, 4, '2017-07-03 15:58:18', 'tanvi'),
 (10, 1, '计算机专业怎么样', '嗯？', '2017-06-30 23:34:15', 0, 6, '2017-07-03 12:11:40', 'tanvi'),
@@ -807,7 +809,7 @@ ALTER TABLE `activityquestion`
 -- 使用表AUTO_INCREMENT `answer`
 --
 ALTER TABLE `answer`
-  MODIFY `answerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `answerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- 使用表AUTO_INCREMENT `comment`
 --
@@ -817,12 +819,12 @@ ALTER TABLE `comment`
 -- 使用表AUTO_INCREMENT `follow`
 --
 ALTER TABLE `follow`
-  MODIFY `followId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `followId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- 使用表AUTO_INCREMENT `message`
 --
 ALTER TABLE `message`
-  MODIFY `mId` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `mId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- 使用表AUTO_INCREMENT `question`
 --

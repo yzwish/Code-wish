@@ -12,8 +12,20 @@ public class Answer {
 	
 	//
 	private int questionId;		//所属问题ID
-	
-	
+	private String questionUserId;//所属问题提问人ID
+	private String questionTitle;//所属问题标题
+	public String getQuestionTitle() {
+		return questionTitle;
+	}
+	public void setQuestionTitle(String questionTitle) {
+		this.questionTitle = questionTitle;
+	}
+	public String getQuestionUserId() {
+		return questionUserId;
+	}
+	public void setQuestionUserId(String questionUserId) {
+		this.questionUserId = questionUserId;
+	}
 	public int getQuestionId() {
 		return questionId;
 	}

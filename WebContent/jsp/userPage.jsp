@@ -122,7 +122,7 @@ function showYssz(){
 			document.getElementById("baseInfoTea").style.display="none";
 		
 	    document.getElementById("privateUni").style.display="";
-	 
+	    
 	}
 	
 	else if(document.getElementById("duty").value=="1")
@@ -157,14 +157,55 @@ function showYssz(){
 	
 	
 	}
-                      
-                        
+       
+function checkCom()
+{   
+	if(document.getElementById("judgeTea").value=="")
+		{
+		
+		alert("评价内容不能为空！");
+		return false;
+		}
+	
+	if(document.getElementById("judgeTea").value.length>20)
+	{
+	
+	alert("评价内容不能超过20字");
+	return false;
+	}
+	alert("评价成功");
+    return true;
+}
+     
+
+function checkRep()
+{
+	
+	if(document.getElementById("Report").value=="")
+		{
+		
+		alert("举报内容不能为空！");
+		return false;
+		}
+	
+	if(document.getElementById("Report").value.length>20)
+	{
+	
+	alert("举报内容不能超过20字");
+	return false;
+	}
+	alert("举报成功");
+    return true;
+	
+}
 </script>
 
 <input type="hidden" id="duty" value="${duty}">
 <input type="hidden" id="visitDuty" value="${visitDuty}">
 <input type="hidden" id="id" value="${id}">
+<input type="hidden" id="visitId" value="${visitId}">
 <input type="hidden" id="login_status" value="${login_status}">
+<input type="hidden" id="followUser" value="${followUser}">
 
 <!-- 状态栏 -->
 <div class="header-banner">
@@ -204,10 +245,38 @@ function showYssz(){
 			    ${visitUser.id}的个人主页
 			</h3>
 			
-			<input type="hidden" id="duty" value="${duty}"/>
+			
 			<br>
-			<a href="#">关注</a>
-			<a href="#">举报</a>
+			<c:if test="${id!=visitId}">
+			
+			<c:if test="${followUser==0}">
+			<form action="/yzwish/comment/addFollow.do" method ="post">
+             <input type="hidden" name="id" value="${id}">
+             <input type="hidden" name="visitId" value="${visitId}">
+			 <input type="submit" value="关注" >
+			 </form>
+			 </c:if>
+			
+			 <c:if test="${followUser==1}">
+			 <form action="/yzwish/comment/cancelFollow.do" method ="post">
+             <input type="hidden" name="id" value="${id}">
+             <input type="hidden" name="visitId" value="${visitId}">
+			<input type="submit" value="取消关注" >
+			</form>
+			</c:if>
+			
+			<form action="/yzwish/comment/addReport.do" onSubmit="return checkRep()" method ="post">
+             <input type="hidden" name="id" value="${id}">
+             <input type="hidden" name="visitId" value="${visitId}">
+             <input type="text" id="Report" name="Report" style="width:400px;" >
+             <p class="help-block">
+					请保证举报的客观性，不超过20字
+			 </p>
+			<input type="submit" value="举报用户" >
+			</form>
+			
+			
+			</c:if>
 			<br>
 			<br>
 
@@ -945,17 +1014,55 @@ function showYssz(){
 							${visitUser.position}
 						</td>
 					</tr>
-					
+					<%
+			       ArrayList<Comment> listC=(ArrayList<Comment>)request.getAttribute("visitComment"); 
+			       if(listC.isEmpty())
+			       {
+				     %>
+					 <tbody>
 					<tr>
 						<td>
-							评价者：
-						</td>
-						<td>
-							评价内容：
+							暂无评价
 						</td>
 					</tr>
-					
+				   </tbody>
+			        <%
+			      }
+			  else
+			{
+				  
+				  %>
+				  <thead>
+					<tr>
+						<th>
+							评价信息
+						</th>
+					</tr>
+				</thead>
+				  <% 
+			for(Comment comment:listC)
+			{
+				String id=comment.getCommentUserId();
+			    String content=comment.getCommentContent();
+			
+			%>
+			
+				<tbody>
+					<tr>
+						<td>
+							评价者：<%=id%>
+						</td>
+						<td>
+							评价内容：<%=content%>
+						</td>
+					</tr>
 				</tbody>
+		
+			<%
+			  }
+			}
+			
+			%>
 			</table>
 			<c:if test="${visitTeaPrivate.showTopic==1}">
 			<table class="table table-hover">
@@ -1161,19 +1268,25 @@ function showYssz(){
 			
 		    </c:if>
 		    <c:if test="${id!=visitId}">
-			<div style="display:" id="judgeTeaDiv">
+		    
+		    <div style="display:" id="judgeTeaDiv">
+		    <form action = "addComment.do" onSubmit="return checkCom()" method ="post">
+		    
+		    <label class="control-label">评价老师</label>
+			<br>
 			
-						<label class="control-label">评价老师</label>
-						<br>
-						<textarea name="judgeTea" id="judgeTea" style="width:400px;height:60px;"></textarea>
-						<p class="help-block">
-								不超过20字
-							</p>
-						<div style = "text-align:left;">
-						<input type="button" id="loginCheck" value="提交" class="btn btn-default">
-			            </div>
-						<div style="height:20px"></div>
-			</div>
+             <input type="hidden" name="id" value="${id}">
+             <input type="hidden" name="visitId" value="${visitId}">
+             <input type="text" id="judgeTea" name="judgeTea" style="width:400px;" >
+             <p class="help-block">
+					请保证评价的客观性，不超过20字
+			 </p>
+             <input type="submit" value="提交评价" >
+            
+            </form>
+            </div>
+            
+		   
 			</c:if>
 			
 			</div>
@@ -1309,6 +1422,7 @@ function showYssz(){
 					</tr>
 				</tbody>
 			  </table>
+			  
 			  <form name="form" id="f2" class="form-horizontal templatemo-login-form-2" role="form" 
 			  method="post" onSubmit="changePrivate()" enctype="multipart/form-data">
 			  <div style = "text-align:right;">
@@ -1373,7 +1487,7 @@ function showYssz(){
 				   </tbody>
 			    </table>
 			   <form name="form" id="f2" class="form-horizontal templatemo-login-form-2" role="form" 
-			   method="post" action= enctype="multipart/form-data">
+			   method="post" enctype="multipart/form-data">
 			   <div style = "text-align:right;">
 			   <input type="submit" class="btn btn-default" value="修改"/>
 			   </div>

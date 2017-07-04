@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +168,7 @@ public class UserPageDao {
 		ConnectionManager.close(conn, rs, ptmt);
 		return h;
 	}
-	public static Tprivates findTprivates(String id) throws SQLException
+	public Tprivates findTprivates(String id) throws SQLException
 	{
 		System.out.println("开始查找老师隐私信息");
 		Connection conn=ConnectionManager.getInstance().getConnection(); 
@@ -581,5 +584,144 @@ public class UserPageDao {
 		ConnectionManager.close(conn, rs, ptmt);
 		return list;
 	}
+	
+	public boolean addComment(String visitId,String id,String comment)
+	{//添加评价
+		
+		Date date=new Date(System.currentTimeMillis()); 
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String timeNow=format.format(date);
+		
+		System.out.println("开始添加评价");
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		
+		
+		 String sql="INSERT INTO `yzwish`.`comment` (`commentedUserId`, `commentUserId`, `commentContent`, `commentTime`) VALUES ('"+visitId+"', '"+id+"', '"+comment+"', '"+timeNow+"');";
+         Boolean b=ConnectionManager.excuteIUD(sql, conn, ptmt);
+         
+		 ConnectionManager.close(conn, rs, ptmt);
+		 return b;
+		
+	}
+	
+	public List<Comment> findComment(String visitId) throws SQLException {
+		// 查找评价
+		System.out.println("开始查找参加活动信息");
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		
+		String sql="select * from comment where commentedUserId='"+visitId+"';";
+		rs=ConnectionManager.excuteSelect(sql,conn,ptmt,rs);
+		
+		List<Comment> list=new ArrayList<Comment>();
+		
+		while(rs.next())
+    	{   Comment q = new Comment();
+			q.setCommentUserId(rs.getString("commentUserId"));;
+    		q.setCommentContent(rs.getString("commentContent"));
+    		System.out.println("找到"+q.toString());
+    		
+    		list.add(q);
+    	}
+		conn.close();
+		ConnectionManager.close(conn, rs, ptmt);
+		
+		return list;
+	}
+	
+	
+	public boolean addFollow(String visitId,String id)
+	{//添加关注
+		
+		Date date=new Date(System.currentTimeMillis()); 
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String timeNow=format.format(date);
+		
+		System.out.println("开始添加关注");
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		
+		
+		 String sql="INSERT INTO `yzwish`.`follow` (`followType`, `followUserId`, `followedId`, `followTime`) VALUES ('1', '"+id+"', '"+visitId+"', '"+timeNow+"');";
+
+         Boolean b=ConnectionManager.excuteIUD(sql, conn, ptmt);
+		 ConnectionManager.close(conn, rs, ptmt);
+		 return b;
+		
+	}
+	
+	public int checkFollow(String visitId,String id) throws SQLException
+	{//查看是否关注
+		
+		Date date=new Date(System.currentTimeMillis()); 
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String timeNow=format.format(date);
+		
+		System.out.println("开始添加关注");
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		
+		
+		 String sql="select count(followid) as num from follow where followUserId='"+id+"' and followedId='"+visitId+"';";
+		 rs=ConnectionManager.excuteSelect(sql,conn,ptmt,rs);
+		 int num=0;
+		 while(rs.next())
+		 {
+			num=rs.getInt("num"); 
+		 }
+         
+		 ConnectionManager.close(conn, rs, ptmt);
+		 return num;
+		
+	}
+	
+	public boolean cancelFollow(String visitId,String id)
+	{//取消关注
+		
+		Date date=new Date(System.currentTimeMillis()); 
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String timeNow=format.format(date);
+		
+		System.out.println("开始取消关注");
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		
+		
+		 String sql="delete from follow where followUserId='"+id+"' and followedId='"+visitId+"';";
+
+         Boolean b=ConnectionManager.excuteIUD(sql, conn, ptmt);
+		 ConnectionManager.close(conn, rs, ptmt);
+		 return b;
+		
+	}
+	
+	
+	public boolean addReport(String visitId,String id,String report)
+	{//添加举报
+		
+		Date date=new Date(System.currentTimeMillis()); 
+		DateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String timeNow=format.format(date);
+		
+		System.out.println("开始添加举报");
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		
+		
+		 String sql="INSERT INTO `yzwish`.`report` (`reportType`, `reporterID`, `reportedID`, reportReason,`reportTime`) VALUES ('4', '"+id+"', '"+visitId+"', '"+report+"', '"+timeNow+"');";
+
+         Boolean b=ConnectionManager.excuteIUD(sql, conn, ptmt);
+		 ConnectionManager.close(conn, rs, ptmt);
+		 return b;
+		
+	}
+	
 	
 }
