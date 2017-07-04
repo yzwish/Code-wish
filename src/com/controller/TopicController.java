@@ -39,8 +39,10 @@ public class TopicController {
 		String result = TopicDao.createTopic(topic, userId);
 		if(result == "ok"){
 			return new ModelAndView("redirect:/jsp/success.jsp");
+		}else if(result =="error"){
+			return new ModelAndView("/showHotTopic");
 		}else{
-			return new ModelAndView("/jsp/topicHome");
+			return new ModelAndView("redirect:/jsp/failed.jsp");
 		}
 	}
 	
@@ -137,6 +139,10 @@ public class TopicController {
     public @ResponseBody String answerQuestion(@RequestBody Answer answer, HttpSession session){
 		int duty = Integer.parseInt((String)session.getAttribute("duty"));
 		String result = TopicDao.answerQuestion(answer,duty);
+		
+		
+		
+		
 		return result;
 	}
 	

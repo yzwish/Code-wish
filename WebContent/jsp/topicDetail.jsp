@@ -70,7 +70,7 @@ $(document).ready(function(){
 </head>
 
 <body id="fix-modal-open">
-	<div class="container" style="margin-top:0">
+	<div class="container" style="margin-top:0;min-height:600px;">
 		<div class="row clearfix">
 			<div class="col-md-12 column topic-detail-banner">
 				<img src="${topic.topicBanner }" alt="banner" height="280" />
@@ -201,7 +201,7 @@ $(document).ready(function(){
 									</div>
 									<div class="col-md-2 column">
 										<span> <i class=" glyphicon glyphicon-user"></i> <span>
-												<a href="#" target="_blank">${question.userId }</a>
+												<a href="/yzwish/comment/getUser.do?visitId=${question.userId }" target="_blank">${question.userId }</a>
 										</span>
 										</span>
 									</div>
@@ -247,7 +247,7 @@ $(document).ready(function(){
 			</form>
 		</div>
 	</div>
-
+<jsp:include page="down.jsp" />
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/topic.js"></script>
 </body>

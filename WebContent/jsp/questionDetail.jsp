@@ -64,7 +64,7 @@
 </head>
 
 <body id="fix-modal-open">
-	<div class="container" style="margin-top: 0">
+	<div class="container" style="margin-top: 0 ;min-height:600px;">
 		<div class="question-header">
 			<div class="row clearfix">
 				<div class="col-md-12 column">
@@ -76,10 +76,10 @@
 			<div class="row clearfix">
 				<div class="col-md-2 column">
 					<img src="../topicImages/avatar.jpg" width="100" height="100">
-					<p>${question.userId }</p>
+					<p><a id="questionUserId" href="/yzwish/comment/getUser.do?visitId=${question.userId }" target="_blank">${question.userId }</a></p>
 				</div>
 				<div class="col-md-7 column">
-					<h3>${question.quesTitle }</h3>
+					<h3 id="question-title-for-mess">${question.quesTitle }</h3>
 					<p>${question.quesContent }</p>
 				</div>
 				<div class="col-md-3 column">
@@ -173,7 +173,7 @@
 						style='background-color:${colors[colorIndex] }'>
 						<div class="answer-username">
 						
-							<a href="#"> ${answer.answerUserId } </a>
+							<a href="/yzwish/comment/getUser.do?visitId=${answer.answerUserId }" target="_blank">${answer.answerUserId }</a> 
 							 <span>
 								
 							<a id='modal-report-ans-${answer.answerId }' href='#modal-container-report-ans-${answer.answerId }'  
@@ -302,6 +302,7 @@
 			</div>
 		</div>
 	</div>
+	<jsp:include page="down.jsp" />
 	<script src="../js/bootstrap.min.js"></script>
 	<script src="../js/topic.js"></script>
 </body>

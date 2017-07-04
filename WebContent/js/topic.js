@@ -211,7 +211,9 @@ function answerQuestion(){
 			    var thisQuesId=$("#questionId").val();
 			   answer.answerUserId=$("#answerUserId").val();
 			   answer.questionId=thisQuesId;
-			   answer.answerContent=$("#answerContent").val()
+			   answer.answerContent=$("#answerContent").val();
+			   answer.questionUserId=$("#questionUserId").html();
+			   answer.questionTitle=$("#question-title-for-mess").html();
 			    var info = JSON.stringify(answer);
 				$.ajax({
 			        type: "POST",
