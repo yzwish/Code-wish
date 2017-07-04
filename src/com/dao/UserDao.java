@@ -1342,4 +1342,34 @@ public class UserDao {
 			ConnectionManager.close(conn, rs, ptmt);
 		}
     }
+
+
+
+    //µÃµ½ÕË»§×´Ì¬
+	public static Account getAccountInfo(String id){
+		Account a=new Account();
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		try {	
+			String sql="select * from account where id='"+id+"'";
+			synchronized(sql){
+	    	rs=ConnectionManager.excuteSelect(sql,conn,ptmt,rs);	
+	    	if(rs.next()){
+	    		a.setId(rs.getString("id"));
+	    		a.setDuty(rs.getInt("duty"));
+	    		a.setStatus(rs.getInt("status"));
+	    		a.setPassword(rs.getString("password"));
+	    	} 
+			}
+			return a;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} finally{
+			ConnectionManager.close(conn,rs,ptmt);
+		}
+	}
+
 }
