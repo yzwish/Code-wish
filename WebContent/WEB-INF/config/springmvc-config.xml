@@ -10,8 +10,8 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="ywq.controller" />
-    <context:component-scan base-package="ywq.service" />
+    <context:component-scan base-package="com.controller" />
+    <context:component-scan base-package="com.service" />
     
     <mvc:annotation-driven/>
     
