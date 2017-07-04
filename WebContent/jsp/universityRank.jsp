@@ -14,6 +14,29 @@
 </head>
 <body>
 
+<script type="text/javascript">
+function checkRep()
+{
+	
+	if(document.getElementById("searchBox").value=="")
+		{
+		
+		alert("内容不能为空");
+		return false;
+		}
+	
+	if(document.getElementById("searchBox").value.length>20)
+	{
+	
+	alert("大学名称不能超过20字");
+	return false;
+	}
+	alert("搜索成功");
+    return true;
+	
+}
+</script>
+
 <div class="container">
 	<div class="row clearfix">
 		<div class="col-md-12 column">
@@ -28,10 +51,11 @@
 				
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					
-					<form class="navbar-form navbar-left" role="search">
+					<form class="navbar-form navbar-left"  action="/yzwish/university/searchUniversity.do" onSubmit="return checkRep()" method ="post">
 						<div class="form-group">
-							<input type="text" class="form-control" />
-						</div> <button type="submit" class="btn btn-default">搜索大学</button>
+						<input type="text" id="searchBox" name="searchBox" >
+						</div> 
+						    <input type="submit" class="btn btn-default" value="搜索大学"/>
 					</form>
 					
 				</div>
@@ -120,6 +144,57 @@
 					
 				</tbody>
 			</table>
+			<input type="button" id="unifind" name="unifind" value="unifind${unifind}">
+			<c:if test="${unifind!=2}">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							搜索结果
+						</th>
+					</tr>
+				</thead>
+				<c:if test="${unifind==0}">
+				
+				<tbody>
+				    <tr>
+				        <td>
+				        无搜索结果
+						</td>
+					</tr>	
+				</tbody>
+			
+				</c:if>
+				<c:if test="${unifind==1}">
+				<c:forEach var="universitySearchList" items="${universitySearchList}">
+				<tbody>
+				   <tr>
+				    <td>
+							${universityRankList.rank}
+						 </td>
+						 <td>
+                         <form action ="/yzwish/university/getUniversityDetail.do" method = "post">
+                         ${universityRankList.universityName}
+                         <input type="submit" value="进入主页" >
+                         <input type="hidden" name="universityId" value="${universitySearchList.universityId}" >
+                         </form>
+                        </td>
+						<td>
+							${universitySearchList.provinceName}
+						</td>
+						<td>
+							${universitySearchList.type}
+						</td>
+						<td>
+						<input type="hidden" name="universityId" value="${universitySearchList.universityId}" >
+						</td>
+					</tr>	
+				</tbody>
+				</c:forEach>
+				</c:if>
+			</table>
+			</c:if>
+			
 		</div>
 	</div>
 </div>

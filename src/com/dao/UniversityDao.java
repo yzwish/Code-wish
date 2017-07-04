@@ -48,6 +48,43 @@ public class UniversityDao {
     	return universityRankList;
 	}
 	
+	
+	public List<University> getUniversityByName(String name) throws SQLException, PropertyVetoException
+	{//升序查询大学
+		Connection conn=ConnectionManager.getInstance().getConnection(); 
+		PreparedStatement ptmt=null;
+		ResultSet rs=null;
+		
+    	String sql="select * from University,province where university.provinceId=province.provinceId and university.universityName like '%"+name+"%' order by rank asc";
+    	
+    	rs=ConnectionManager.excuteSelect(sql,conn,ptmt,rs);
+    	
+    	List<University> universityRankList=new ArrayList<University>();
+    	System.out.println("检索后查询大学"); 
+    	while(rs.next())
+    	{
+    		University u=new University();
+    		u.setUniversityId(rs.getString("universityId"));
+    		u.setUniversityName(rs.getString("universityName"));
+    		u.setType(rs.getString("type"));
+    		u.setProvinceId(rs.getString("provinceId"));
+    		u.setRank(rs.getInt("rank"));
+    		u.setIntroduction(rs.getString("introduction"));
+    		u.setEnrollmentPlan(rs.getString("enrollmentPlan"));
+    		u.setFaculty(rs.getString("faculty"));
+    		u.setComment(rs.getString("comment"));
+    	    u.setProvinceName(rs.getString("provinceName"));
+    		System.out.println(u.toString());
+    		universityRankList.add(u);
+    		
+    	}
+    	
+    	
+    	ConnectionManager.close(conn, rs, ptmt);
+		
+    	return universityRankList;
+	}
+	
 	public University getUniversityDetail(String universityId) throws SQLException, PropertyVetoException
 	{//获取主页大学
 		Connection conn=ConnectionManager.getInstance().getConnection(); 
